@@ -27,17 +27,16 @@ struct user {
 };
 void read(vector<user> &users);
 void write(user users);
+bool find(string phoneNumber, vector<user> users);
+bool find(string email, vector<user> users);
+bool find(string email, string password, vector<user> users);
+bool find(int accounNumber, vector<user> users);
+
 int main() {
-	vector<user> users;
-
-
-	read(users);
-	write(users[0]);
-	for (int i = 0; i < 1; i++) {
-		cout << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
-			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << endl;
-	}
+	
 }
+
+
 void read(vector<user> &users) {
 	user temp;
 	ifstream in("userData.txt");
@@ -52,13 +51,52 @@ void read(vector<user> &users) {
 	}
 	in.close();
 }
+
 void write(user users) {
-	fstream out("userData.txt",ios::app);
+	fstream out("userData.txt", ios::app);
 	if (!out) {
 		cout << "file not found";
 		return;
 	}
-		out << users.accountNum << " " << users.userAccount.userName << " " << users.userAccount.email << " " << users.phoneNumber << " " <<
-			users.balance << " " << users.transactionCount << " " << users.age << " " << users.userAccount.password << endl;
+	out << users.accountNum << " " << users.userAccount.userName << " " << users.userAccount.email << " " << users.phoneNumber << " " <<
+		users.balance << " " << users.transactionCount << " " << users.age << " " << users.userAccount.password << endl;
 	out.close();
 }
+bool find(string phoneNumber, vector<user> users)
+{
+	for (int i = 0; i < users.size(); i++) {
+		if (phoneNumber == users[i].phoneNumber) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool find(string email, vector<user> users) {
+	for (int i = 0; i < users.size(); i++) {
+		if (email == users[i].userAccount.email) {
+			return true;
+		}
+	}
+	return false; 
+}
+bool find(string email, string password, vector<user> users) {
+	for (int i = 0; i < users.size(); i++) {
+		if (email == users[i].userAccount.email && password == users[i].userAccount.password) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool find(int accountNumber, vector<user> users) {
+	for (int i = 0; i < users.size(); i++) {
+		if (accountNumber == users[i].accountNum) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
