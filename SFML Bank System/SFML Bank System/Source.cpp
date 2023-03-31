@@ -17,10 +17,10 @@ struct transaction {
 struct user {
 	account userAccount;
 	vector<transaction> userTransaction;
-	int age=20;
-	float balance=0;
-	string phoneNumber=" ";
-	int accountNum=0;
+	int age;
+	float balance;
+	string phoneNumber;
+	int accountNum;
 	bool frozen = false;
 	int transactionCount = 0;
 
@@ -31,18 +31,47 @@ bool findPhone(string phoneNumber, vector<user> users);
 bool findEmail(string email, vector<user> users);
 bool find(string email, string password, vector<user> users);
 bool find(int accounNumber, vector<user> users);
-void addEmployee(vector<user> &users);
-
-
-
+void signup(vector<user>& users);
 
 int main() {
-	vector<user>users;
+	vector<user> users;
 	read(users);
-	addEmployee(users);
-
+	signup(users);
 }
 
+void signup(vector<user>& users) {
+	user temp;
+	cout << "enter name\n";
+	cin >> temp.userAccount.userName;
+	cout << "enter email\n";
+	cin >> temp.userAccount.email;
+	while (findEmail(temp.userAccount.email, users)) {
+		cout << "email is already in use enter another one\n";
+		cin >> temp.userAccount.email;
+	}
+	cout << "enter password\n";
+	cin >> temp.userAccount.password;
+	cout << "enter phone number\n";
+	cin >> temp.phoneNumber;
+	cout << "enter age\n";
+	cin >> temp.age;
+	while (temp.age < 21) {
+		cout << "under age 7aker must be older than 21 to continue pls enter another age\n";
+		cin >> temp.age;
+	}
+	cout << "enter balance\n";
+	cin >> temp.balance;
+	while (temp.balance<300) {
+		cout << "balance can't be less than 300 EGP pls enter another amount\n";
+		cin >> temp.balance;
+	}
+
+	temp.accountNum = (rand() % 101) + 100;
+	while (find(temp.accountNum, users)) {
+		temp.accountNum = (rand() % 101) + 900;
+	}
+	write(temp);
+}
 
 void read(vector<user> &users) {
 	user temp;
@@ -104,21 +133,6 @@ bool find(int accountNumber, vector<user> users) {
 	}
 	return false;
 }
-void addEmployee(vector<user> &users){
-	user newEmployee;
-	cout << "Enter employee name " << endl;
-	cin >> newEmployee.userAccount.userName;
-	cout << "Enter employee email " << endl;
-	cin >> newEmployee.userAccount.email;
-	while (findEmail(newEmployee.userAccount.email, users)) {
-		cout << "Email already in use enter another one" << endl;
-		cin >> newEmployee.userAccount.email;
-	}
-	cout << "Enter employee Password " << endl;
-	cin >> newEmployee.userAccount.password;
 
-	users.push_back(newEmployee);
-	write(users[users.size() - 1]);
-}
 
 
