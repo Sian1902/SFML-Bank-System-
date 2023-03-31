@@ -32,11 +32,27 @@ bool findEmail(string email, vector<user> users);
 bool find(string email, string password, vector<user> users);
 bool find(int accounNumber, vector<user> users);
 void signup(vector<user>& users);
+void login(vector<user>& users);
 
 int main() {
 	vector<user> users;
 	read(users);
 	signup(users);
+}
+void login(vector<user>& users) {
+	user temp;
+	cout << "enter email\n";
+	cin >> temp.userAccount.email;
+	cout << "enter password\n";
+	cin >> temp.userAccount.password;
+	while (!find(temp.userAccount.email,temp.userAccount.password,users)) {
+		cout << "email and password doesn't match\n";
+		cout << "enter email\n";
+		cin >> temp.userAccount.email;
+		cout << "enter password\n";
+		cin >> temp.userAccount.password;
+	}
+
 }
 
 void signup(vector<user>& users) {
