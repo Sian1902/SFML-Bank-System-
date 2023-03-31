@@ -39,6 +39,7 @@ void login(vector<user>& users);
 int main() {
 	vector<user> users;
 	read(users);
+	login(users);
 	signup(users);
 }
 void login(vector<user>& users) {
@@ -88,7 +89,7 @@ void signup(vector<user>& users) {
 	while (find(temp.accountNum, users)) {
 		temp.accountNum = (rand() % 101) + 900;
 	}
-	write(temp);
+	users.push_back(temp);
 }
 
 void read(vector<user> &users) {
