@@ -32,7 +32,7 @@ bool findEmail(string email, vector<user> users);
 bool find(string email, string password, vector<user> users);
 bool find(int accounNumber, vector<user> users);
 void signup(vector<user>& users);
-
+void addEmployee(vector<user>& users);
 int main() {
 	vector<user> users;
 	read(users);
@@ -133,6 +133,21 @@ bool find(int accountNumber, vector<user> users) {
 	}
 	return false;
 }
+void addEmployee(vector<user>& users) {
+	user newEmployee;
+	cout << "Enter employee name " << endl;
+	cin >> newEmployee.userAccount.userName;
+	cout << "Enter employee email " << endl;
+	cin >> newEmployee.userAccount.email;
+	while (findEmail(newEmployee.userAccount.email, users)) {
+		cout << "Email already in use enter another one" << endl;
+		cin >> newEmployee.userAccount.email;
+	}
+	cout << "Enter employee Password " << endl;
+	cin >> newEmployee.userAccount.password;
 
+	users.push_back(newEmployee);
+	write(users[users.size() - 1]);
+}
 
 
