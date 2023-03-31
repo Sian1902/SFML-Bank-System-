@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 using namespace std;
-
+int index;
 struct account
 {
 	string userName;
@@ -35,7 +35,9 @@ bool find(int accounNumber, vector<user> users);
 void addEmployee(vector<user>& users);
 void signup(vector<user>& users);
 void login(vector<user>& users);
-
+void freeze(int id, vector<user>& users);
+void unfreeze(int id, vector<user>& users);
+void view(int id, vector<user> users);
 int main() {
 	vector<user> users;
 	read(users);
@@ -121,6 +123,7 @@ bool findPhone(string phoneNumber, vector<user> users)
 {
 	for (int i = 0; i < users.size(); i++) {
 		if (phoneNumber == users[i].phoneNumber) {
+			index = i;
 			return true;
 		}
 	}
@@ -130,6 +133,7 @@ bool findPhone(string phoneNumber, vector<user> users)
 bool findEmail(string email, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (email == users[i].userAccount.email) {
+			index = i;
 			return true;
 		}
 	}
@@ -138,6 +142,7 @@ bool findEmail(string email, vector<user> users) {
 bool find(string email, string password, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (email == users[i].userAccount.email && password == users[i].userAccount.password) {
+			index = i;
 			return true;
 		}
 	}
@@ -147,6 +152,7 @@ bool find(string email, string password, vector<user> users) {
 bool find(int accountNumber, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (accountNumber == users[i].accountNum) {
+			index = i;
 			return true;
 		}
 	}
@@ -169,4 +175,40 @@ void addEmployee(vector<user>& users) {
 	write(users[users.size() - 1]);
 }
 
+void freeze(int id, user u) // Passing account ID
+{
+	u.frozen = true;
+
+}
+
+void freeze(int accNum, vector<user>& users)
+{
+	if (!find(accNum, users)) {
+		cout << "this user doesn't exist" << endl;
+	}
+	else 	if (find(accNum, users)) {
+		users[index].frozen = true;
+		cout << "frozen" << endl;
+	}
+
+}
+void unfreeze(int accNum, vector<user>& users)
+{
+	if (!find(accNum, users)) {
+		cout << "this user doesn't exist" << endl;
+	}
+	else if (find(accNum, users)) {
+		users[index].frozen = false;
+		cout << "active" << endl;
+	}
+
+}
+void view(int accNum,vector<user> users) {
+	if (!find(accNum, users)) {
+		cout << "this user doesn't exist" << endl;
+	}
+	else if (find(accNum, users)) {
+		cout << users[index].balance << " " << users[index].userAccount.userName;
+	}
+}
 
