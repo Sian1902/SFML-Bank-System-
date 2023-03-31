@@ -1,2 +1,12 @@
+<<<<<<< HEAD
 ﻿  Source.cpp
-  SFML Bank System.vcxproj -> D:\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe
+<<<<<<< HEAD
+  SFML Bank System.vcxproj -> C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe
+=======
+D:\codeing\New folder (2)\Team project\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(104,60): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\codeing\New folder (2)\Team project\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(107,32): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  SFML Bank System.vcxproj -> D:\codeing\New folder (2)\Team project\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe
+>>>>>>> origin/test
+=======
+﻿  SFML Bank System.vcxproj -> D:\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe
+>>>>>>> savior
