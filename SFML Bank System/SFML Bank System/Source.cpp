@@ -103,20 +103,29 @@ void read(vector<user> &users) {
 	}
 	for (int i = 0; !in.eof();i++) {
 		in >> temp.accountNum >> temp.userAccount.userName >> temp.userAccount.email >> temp.phoneNumber >>
-			temp.balance >> temp.transactionCount >> temp.age >> temp.userAccount.password;
+			temp.balance >> temp.transactionCount >> temp.age >> temp.userAccount.password>>temp.frozen;
+		for (int j = 0; j < temp.userTransaction.size(); j++) {
+			in>> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
+		}
 		users.push_back(temp);
 	}
 	in.close();
 }
 
-void write(user users) {
-	fstream out("userData.txt", ios::app);
+void write(vector<user>& users) {
+	fstream out("userData.txt", ios::out);
 	if (!out) {
 		cout << "file not found";
 		return;
 	}
-	out << users.accountNum << " " << users.userAccount.userName << " " << users.userAccount.email << " " << users.phoneNumber << " " <<
-		users.balance << " " << users.transactionCount << " " << users.age << " " << users.userAccount.password << endl;
+	for (int i = 0; i < users.size(); i++) {
+		out << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
+			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password <<" " << users[i].frozen;
+		for (int j = 0; j < users[i].userTransaction.size(); j++) {
+			out << " " << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount;
+		}
+		out << endl;
+	}
 	out.close();
 }
 bool findPhone(string phoneNumber, vector<user> users)
