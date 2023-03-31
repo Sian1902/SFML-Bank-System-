@@ -243,7 +243,7 @@ void Transfer(vector<user>& users) {
 	}
 };
 void ViewTransactions(vector<user> users){
-	for (int i = 0;users[thisUserIndex].userTransaction.size();i++) {
+	for (int i = users[thisUserIndex].userTransaction.size();i==0;i--) {
 		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType << " with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount << " to " << users[thisUserIndex].userTransaction[i].recepient << endl;
 	}
 
