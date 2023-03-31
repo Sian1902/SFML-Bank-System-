@@ -1,6 +1,7 @@
 #include<iostream>
 #include <fstream>
 #include <vector>
+#include<sstream>
 using namespace std;
 
 struct account
@@ -34,10 +35,49 @@ bool find(int accounNumber, vector<user> users);
 void signup(vector<user>& users);
 void login(vector<user>& users);
 
+void Withdraw(vector<user>& users);
+void Transfer(vector<user>& user1);
+void ViewTransactions(vector<user> users);
+
+//global variables
+int thisUserIndex;
+int anotherUserIndex;
+
 int main() {
 	vector<user> users;
 	read(users);
-	signup(users);
+	cout << "press 1 to sign up or 0 to sign in\n";
+	int choice;
+	int choice1;
+
+	cin >> choice;
+	if (choice == 1) {
+		signup(users);
+
+	}
+	else if (choice == 0) {
+		login(users);
+		do {
+			cout << "Press 0 for withdrawal or 1 to transfer\n";
+			cin >> choice1;
+			if (choice1 == 0) {
+				Withdraw(users);
+			}
+			else if (choice1 == 1) {
+				Transfer(users);
+
+				ViewTransactions(users);
+			}
+			else
+				cout << "Please enter a valid choice\n";
+			
+		} while (choice1 != 1 || choice1 != 0);
+		
+
+	}
+	else
+		cout << "invalid choice";
+
 }
 void login(vector<user>& users) {
 	user temp;
@@ -87,6 +127,7 @@ void signup(vector<user>& users) {
 		temp.accountNum = (rand() % 101) + 900;
 	}
 	write(temp);
+	login(users);
 }
 
 void read(vector<user> &users) {
@@ -135,6 +176,7 @@ bool findEmail(string email, vector<user> users) {
 bool find(string email, string password, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (email == users[i].userAccount.email && password == users[i].userAccount.password) {
+			thisUserIndex = i;
 			return true;
 		}
 	}
@@ -144,11 +186,71 @@ bool find(string email, string password, vector<user> users) {
 bool find(int accountNumber, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (accountNumber == users[i].accountNum) {
+			anotherUserIndex = i;
 			return true;
 		}
 	}
 	return false;
 }
+
+void Withdraw(vector<user>& users) {
+	float amount;
+	transaction temp;
+	cout << "Please enter the amount needed to withdraw\n";
+	cin >> amount;
+	if (users[thisUserIndex].balance - amount < 0) {
+		cout << "Not enough balance\n";
+	}
+	else {
+		users[thisUserIndex].balance -= amount;
+		temp.recepient = "No recepient";
+		temp.transactionAmount = amount;
+		temp.transactionType = "Withdrawal";
+		users[thisUserIndex].transactionCount++;
+		users[thisUserIndex].userTransaction.push_back(temp);
+		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " in your account\n ";
+
+	}
+
+};
+void Transfer(vector<user>& users) {
+	float amount;
+	int accNum;
+	string accNumString;
+	transaction temp;
+	cout << "Please Enter the amount you need to transfer\n";
+	cin >> amount;
+	if (users[thisUserIndex].balance - amount < 0) {
+		cout << "Not enough balance\n";
+	}
+	else {
+		cout << "Please Enter the account number that you want to transfer this amount to\n";
+		cin >> accNum;
+		if (find(accNum, users)) {
+			users[thisUserIndex].balance -= amount;
+			users[anotherUserIndex].balance += amount;
+			accNumString = to_string(accNum);
+			temp.recepient = accNumString;
+			temp.transactionAmount = amount;
+			temp.transactionType = "Transfer";
+			users[thisUserIndex].userTransaction.push_back(temp);
+			users[thisUserIndex].transactionCount++;
+			cout << "You have transferred amount of " << amount << " to the account " << accNum << endl;
+		}
+		else {
+			cout << "This acount does not exist\n";
+		}
+	}
+};
+void ViewTransactions(vector<user> users){
+	for (int i = 0;users[thisUserIndex].userTransaction.size();i++) {
+		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType << " with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount << " to " << users[thisUserIndex].userTransaction[i].recepient << endl;
+	}
+
+}
+
+
+
 
 
 
