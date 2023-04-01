@@ -3,7 +3,7 @@
 #include <vector>
 #include<sstream>
 using namespace std;
-int index = 0;
+int thisUserIndex = 0;
 int months = 0;
 
 struct account
@@ -43,10 +43,9 @@ void loan(vector<user>&users,float trans);
 
 void Withdraw(vector<user>& users);
 void Transfer(vector<user>& user1);
-void ViewTransactions(vector<user> users);
+void ViewTransactions(vector<user>& users);
 void exit(vector<user> users);
 //global variables
-int thisUserIndex;
 int anotherUserIndex;
 
 void freeze(int id, vector<user>& users);
@@ -56,22 +55,22 @@ int main() {
 	vector<user> users;
 	cout << "hi" << endl;
 	read(users);
-	
+	cout << users.size();
 	/*signup(users);
 	signup(users);
 	addEmployee(users);
-	login(users);
+
 	freeze(12, users);
 	freeze(8827, users);*/
 	login(users);
+
 	Withdraw(users);
-	//Withdraw(users);
-	//Transfer(users);
 	//Transfer(users);
 	//ViewTransactions(users);
 	//loan(users, 10000);
-	exit(users);
 	ViewTransactions(users);
+	exit(users);
+	
 	
 }
 void login(vector<user>& users) {
@@ -101,9 +100,9 @@ void login(vector<user>& users) {
 	if (temp.frozen) {
 		cout << "you can't login " << endl;
 	}
-	cout << users[index].balance << endl;
+	cout << users[thisUserIndex].balance << endl;
 	
-
+	cout << thisUserIndex << endl;
 }
 
 
@@ -131,13 +130,13 @@ void loan(vector<user> &users,float trans) {
 
 
 
-	if (trans * 0.25 >= users[index].balance) {
+	if (trans * 0.25 >= users[thisUserIndex].balance) {
 		cout << "Rejected due to low balance " << endl;
 	}
 
 
 	else if (trans > 100000) {
-		months =( (trans + users[index].balance) / trans)*6;
+		months =( (trans + users[thisUserIndex].balance) / trans)*6;
 		cout << "loan is accepted and have to be returned by " << months << " months";
 
 		transa.transactionType = "loan";
@@ -146,14 +145,14 @@ void loan(vector<user> &users,float trans) {
 
 
 	else {
-	months = (trans + users[index].balance) / trans;
+	months = (trans + users[thisUserIndex].balance) / trans;
 	cout << "loan is accepted and have to be returned by " << months<<" months";
     
 	transa.transactionType = "loan";
 	transa.transactionAmount = trans;
 
 	}
-	users[index].userTransaction.push_back(transa);
+	users[thisUserIndex].userTransaction.push_back(transa);
 	
 	
 
@@ -195,44 +194,40 @@ void signup(vector<user>& users) {
 
 void read(vector<user>& users) {
 	user temp;
+	transaction transactiontemp;
+	
 	ifstream in("userData.txt");
-	ifstream inTransaction("userTransaction.txt");
 	if (!in) {
 		cout << "file not found";
 		return;
 	}
-	if (!inTransaction) {
-		cout << "file not found";
-		return;
-	}
+
 	for (int i = 0; !in.eof(); i++) {
 		in >> temp.accountNum >> temp.userAccount.userName >> temp.userAccount.email >> temp.phoneNumber >>
 			temp.balance >> temp.transactionCount >> temp.age >> temp.userAccount.password >> temp.frozen;
-		for (int j = 0; j < temp.userTransaction.size(); j++) {
-			inTransaction >> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
+		for (int j = 0; j < temp.transactionCount; j++) {
+			temp.userTransaction.push_back(transactiontemp);
+			in >> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
+			
 		}
 		users.push_back(temp);
 	}
 	in.close();
-	inTransaction.close();
+
 }
 
 void write(vector<user> users) {
 	fstream out("userData.txt", ios::out);
-	fstream outTransaction("userTransaction.txt", ios::out);
 	if (!out) {
 		cout << "file not found";
 		return;
 	}
-	if (!outTransaction) {
-		cout << "file not found";
-		return;
-	}
+
 	for (int i = 0; i < users.size(); i++) {
 		out << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
 			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << " " << users[i].frozen<<endl;
-		for (int j = 0; j < users[i].userTransaction.size(); j++) {
-			outTransaction  << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount<<endl;
+		for (int j = 0; j < users[i].transactionCount; j++) {
+			out  << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount<<endl;
 		}
 	
 	}
@@ -242,7 +237,7 @@ bool findPhone(string phoneNumber, vector<user> users)
 {
 	for (int i = 0; i < users.size(); i++) {
 		if (phoneNumber == users[i].phoneNumber) {
-			index = i;
+			thisUserIndex = i;
 			return true;
 		}
 	}
@@ -252,7 +247,7 @@ bool findPhone(string phoneNumber, vector<user> users)
 bool findEmail(string email, vector<user> users) {
 	for (int i = 0; i < users.size(); i++) {
 		if (email == users[i].userAccount.email) {
-			index = i;
+			thisUserIndex = i;
 			return true;
 		}
 	}
@@ -292,9 +287,10 @@ void Withdraw(vector<user>& users) {
 		temp.transactionAmount = amount;
 		temp.transactionType = "Withdrawal";
 		users[thisUserIndex].transactionCount++;
+		cout << temp.transactionAmount << endl;
 		users[thisUserIndex].userTransaction.push_back(temp);
-		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " in your account\n ";
-
+		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " "<<"in your account\n ";
+		cout << thisUserIndex << endl;
 	}
 
 };
@@ -328,9 +324,14 @@ void Transfer(vector<user>& users) {
 		}
 	}
 };
-void ViewTransactions(vector<user> users){
-	for (int i = users[thisUserIndex].userTransaction.size();i==0;i--) {
-		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType << " with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount << " to " << users[thisUserIndex].userTransaction[i].recepient << endl;
+void ViewTransactions(vector<user>& users){
+	int index = users[thisUserIndex].transactionCount-1;
+	for (int i = index; i >= 0;i--) {
+		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType << 
+			" with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount <<
+			" to " << users[thisUserIndex].userTransaction[i].recepient << endl;
+		if (i == index - 4)
+			break;
 	}
 
 }
@@ -359,7 +360,7 @@ void freeze(int accNum, vector<user>& users)
 		cout << "this user doesn't exist" << endl;
 	}
 	else if (find(accNum, users)) {
-		users[index].frozen = true;
+		users[thisUserIndex].frozen = true;
 		cout << "frozen" << endl;
 	}
 
@@ -370,7 +371,7 @@ void unfreeze(int accNum, vector<user>& users)
 		cout << "this user doesn't exist" << endl;
 	}
 	else if (find(accNum, users)) {
-		users[index].frozen = false;
+		users[thisUserIndex].frozen = false;
 		cout << "active" << endl;
 	}
 
