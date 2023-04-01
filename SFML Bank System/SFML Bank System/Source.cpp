@@ -39,12 +39,12 @@ void addEmployee(vector<user>& users);
 void signup(vector<user>& users);
 void login(vector<user>& users);
 bool vaildBalance(user users, float trans);
-float loan(vector<user>&users,float trans);
+void loan(vector<user>&users,float trans);
 
 void Withdraw(vector<user>& users);
 void Transfer(vector<user>& user1);
 void ViewTransactions(vector<user> users);
-
+void exit(vector<user> users);
 //global variables
 int thisUserIndex;
 int anotherUserIndex;
@@ -54,11 +54,25 @@ void unfreeze(int id, vector<user>& users);
 void view(int id, vector<user> users);
 int main() {
 	vector<user> users;
-	
+	cout << "hi" << endl;
 	read(users);
-	login(users);
 	
-
+	/*signup(users);
+	signup(users);
+	addEmployee(users);
+	login(users);
+	freeze(12, users);
+	freeze(8827, users);*/
+	login(users);
+	Withdraw(users);
+	//Withdraw(users);
+	//Transfer(users);
+	//Transfer(users);
+	//ViewTransactions(users);
+	//loan(users, 10000);
+	exit(users);
+	ViewTransactions(users);
+	
 }
 void login(vector<user>& users) {
 	user temp;
@@ -72,6 +86,20 @@ void login(vector<user>& users) {
 		cin >> temp.userAccount.email;
 		cout << "enter password\n";
 		cin >> temp.userAccount.password;
+	}
+	if (find(temp.userAccount.email, temp.userAccount.password, users)) {
+		if (temp.userAccount.email.find("@admin.bank") != string::npos) {
+			cout << "admin ACC" << endl;
+		}
+		else if (temp.userAccount.email.find("@employee.bank") != string::npos) {
+			cout << "employee ACC" << endl;
+		}
+		else {
+			cout << "user ACC" << endl;
+		}
+	}
+	if (temp.frozen) {
+		cout << "you can't login " << endl;
 	}
 	cout << users[index].balance << endl;
 	
@@ -98,7 +126,7 @@ bool vaildBalance(user users,float trans ) {
 }
 	
 
-float loan(vector<user> &users,float trans) {
+void loan(vector<user> &users,float trans) {
 	transaction transa;
 
 
@@ -137,54 +165,8 @@ void signup(vector<user>& users) {
 	cin >> temp.userAccount.userName;
 	cout << "enter email\n";
 	cin >> temp.userAccount.email;
-	while (findEmail(temp.userAccount.email, users)) {
-		cout << "email is already in use enter another one\n";
-		cin >> temp.userAccount.email;
-	}
-	cout << "enter password\n";
-	cin >> temp.userAccount.password;
-	cout << "enter phone number\n";
-	cin >> temp.phoneNumber;
-	cout << "enter age\n";
-	cin >> temp.age;
-	while (temp.age < 21) {
-		cout << "under age 7aker must be older than 21 to continue pls enter another age\n";
-		cin >> temp.age;
-	}
-	cout << "enter balance\n";
-	cin >> temp.balance;
-	while (temp.balance < 300) {
-		cout << "balance can't be less than 300 EGP pls enter another amount\n";
-		cin >> temp.balance;
-	}
-	vector<user> users;
-	read(users);
-	signup(users);
-}
-void login(vector<user>& users) {
-	user temp;
-	cout << "enter email\n";
-	cin >> temp.userAccount.email;
-	cout << "enter password\n";
-	cin >> temp.userAccount.password;
-	while (!find(temp.userAccount.email, temp.userAccount.password, users)) {
-		cout << "email and password doesn't match\n";
-		cout << "enter email\n";
-		cin >> temp.userAccount.email;
-		cout << "enter password\n";
-		cin >> temp.userAccount.password;
-	}
-
-}
-
-void signup(vector<user>& users) {
-	user temp;
-	cout << "enter name\n";
-	cin >> temp.userAccount.userName;
-	cout << "enter email\n";
-	cin >> temp.userAccount.email;
-	while (findEmail(temp.userAccount.email, users)) {
-		cout << "email is already in use enter another one\n";
+	while (findEmail(temp.userAccount.email, users)|| temp.userAccount.email.find("@user.bank")==string::npos) {
+		cout << "email is already in use enter another one make sure to include @user.bank\n";
 		cin >> temp.userAccount.email;
 	}
 	cout << "enter password\n";
@@ -214,7 +196,12 @@ void signup(vector<user>& users) {
 void read(vector<user>& users) {
 	user temp;
 	ifstream in("userData.txt");
+	ifstream inTransaction("userTransaction.txt");
 	if (!in) {
+		cout << "file not found";
+		return;
+	}
+	if (!inTransaction) {
 		cout << "file not found";
 		return;
 	}
@@ -222,26 +209,32 @@ void read(vector<user>& users) {
 		in >> temp.accountNum >> temp.userAccount.userName >> temp.userAccount.email >> temp.phoneNumber >>
 			temp.balance >> temp.transactionCount >> temp.age >> temp.userAccount.password >> temp.frozen;
 		for (int j = 0; j < temp.userTransaction.size(); j++) {
-			in >> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
+			inTransaction >> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
 		}
 		users.push_back(temp);
 	}
 	in.close();
+	inTransaction.close();
 }
 
-void write(vector<user>& users) {
+void write(vector<user> users) {
 	fstream out("userData.txt", ios::out);
+	fstream outTransaction("userTransaction.txt", ios::out);
 	if (!out) {
+		cout << "file not found";
+		return;
+	}
+	if (!outTransaction) {
 		cout << "file not found";
 		return;
 	}
 	for (int i = 0; i < users.size(); i++) {
 		out << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
-			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << " " << users[i].frozen;
+			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << " " << users[i].frozen<<endl;
 		for (int j = 0; j < users[i].userTransaction.size(); j++) {
-			out << " " << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount;
+			outTransaction  << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount<<endl;
 		}
-		out << endl;
+	
 	}
 	out.close();
 }
@@ -295,7 +288,7 @@ void Withdraw(vector<user>& users) {
 	}
 	else {
 		users[thisUserIndex].balance -= amount;
-		temp.recepient = "No recepient";
+		temp.recepient = "noRecepient";
 		temp.transactionAmount = amount;
 		temp.transactionType = "Withdrawal";
 		users[thisUserIndex].transactionCount++;
@@ -321,6 +314,7 @@ void Transfer(vector<user>& users) {
 		if (find(accNum, users)) {
 			users[thisUserIndex].balance -= amount;
 			users[anotherUserIndex].balance += amount;
+			users[anotherUserIndex].transactionCount++;
 			accNumString = to_string(accNum);
 			temp.recepient = accNumString;
 			temp.transactionAmount = amount;
@@ -349,8 +343,8 @@ void addEmployee(vector<user>& users) {
 	cin >> newEmployee.userAccount.userName;
 	cout << "Enter employee email " << endl;
 	cin >> newEmployee.userAccount.email;
-	while (findEmail(newEmployee.userAccount.email, users)) {
-		cout << "Email already in use enter another one" << endl;
+	while (findEmail(newEmployee.userAccount.email, users)|| newEmployee.userAccount.email.find("@employee.bank")==string::npos) {
+		cout << "Email already in use enter another one make sure that your email contains @employee.bank" << endl;
 		cin >> newEmployee.userAccount.email;
 	}
 	cout << "Enter employee Password " << endl;
@@ -359,18 +353,12 @@ void addEmployee(vector<user>& users) {
 	users.push_back(newEmployee);
 }
 
-void freeze(int id, user u) // Passing account ID
-{
-	u.frozen = true;
-
-}
-
 void freeze(int accNum, vector<user>& users)
 {
 	if (!find(accNum, users)) {
 		cout << "this user doesn't exist" << endl;
 	}
-	else 	if (find(accNum, users)) {
+	else if (find(accNum, users)) {
 		users[index].frozen = true;
 		cout << "frozen" << endl;
 	}
@@ -387,12 +375,7 @@ void unfreeze(int accNum, vector<user>& users)
 	}
 
 }
-void view(int accNum, vector<user> users) {
-	if (!find(accNum, users)) {
-		cout << "this user doesn't exist" << endl;
-	}
-	else if (find(accNum, users)) {
-		cout << users[index].balance << " " << users[index].userAccount.userName;
-	}
+void exit(vector<user> users) {
+	write(users);
 }
 
