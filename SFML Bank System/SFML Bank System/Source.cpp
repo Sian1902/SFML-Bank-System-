@@ -55,20 +55,22 @@ int main() {
 	vector<user> users;
 	cout << "hi" << endl;
 	read(users);
-	cout << users.size();
-	/*signup(users);
-	signup(users);
-	addEmployee(users);
 
-	freeze(12, users);
-	freeze(8827, users);*/
-	login(users);
+	cout << users.size()<<endl;
+	///*signup(users);
+	//signup(users);
+	//addEmployee(users);
 
-	Withdraw(users);
+	//freeze(12, users);
+	//freeze(8827, users);*/
+	//login(users);
+	////ViewTransactions(users);
+	////Withdraw(users);
+	////Transfer(users);
+	////ViewTransactions(users);
+	////loan(users, 10000);
 	//Transfer(users);
 	//ViewTransactions(users);
-	//loan(users, 10000);
-	ViewTransactions(users);
 	exit(users);
 	
 	
@@ -213,16 +215,16 @@ void read(vector<user>& users) {
 		users.push_back(temp);
 	}
 	in.close();
-
+	cout << users.size() << endl;
 }
 
 void write(vector<user> users) {
+	cout << users.size()<<endl;
 	fstream out("userData.txt", ios::out);
 	if (!out) {
 		cout << "file not found";
 		return;
 	}
-
 	for (int i = 0; i < users.size(); i++) {
 		out << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
 			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << " " << users[i].frozen<<endl;
@@ -283,12 +285,13 @@ void Withdraw(vector<user>& users) {
 	}
 	else {
 		users[thisUserIndex].balance -= amount;
-		temp.recepient = "noRecepient";
-		temp.transactionAmount = amount;
-		temp.transactionType = "Withdrawal";
 		users[thisUserIndex].transactionCount++;
 		cout << temp.transactionAmount << endl;
 		users[thisUserIndex].userTransaction.push_back(temp);
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = "noRecepient";
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "withdrawl";
+
 		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " "<<"in your account\n ";
 		cout << thisUserIndex << endl;
 	}
@@ -310,13 +313,19 @@ void Transfer(vector<user>& users) {
 		if (find(accNum, users)) {
 			users[thisUserIndex].balance -= amount;
 			users[anotherUserIndex].balance += amount;
+			users[thisUserIndex].transactionCount++;
 			users[anotherUserIndex].transactionCount++;
 			accNumString = to_string(accNum);
-			temp.recepient = accNumString;
-			temp.transactionAmount = amount;
-			temp.transactionType = "Transfer";
 			users[thisUserIndex].userTransaction.push_back(temp);
-			users[thisUserIndex].transactionCount++;
+			users[anotherUserIndex].userTransaction.push_back(temp);
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = accNumString;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "transfer";
+
+
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].recepient = to_string(users[thisUserIndex].accountNum);
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionType = "transfer";
 			cout << "You have transferred amount of " << amount << " to the account " << accNum << endl;
 		}
 		else {
