@@ -4,6 +4,7 @@
 #include<sstream>
 using namespace std;
 int thisUserIndex = 0;
+int months;
 int anotherUserIndex;
 
 
@@ -38,36 +39,39 @@ bool find(int accounNumber, vector<user> users);
 bool addEmployee(vector<user>& users);
 bool signUp(vector<user>& users);
 bool login(vector<user>& users);
-
 bool freeze(int accountNumber, vector<user>& users);
 bool unFreeze(int accountNumber, vector<user>& users);
 
+
+
+
+//second video
+bool validBalance(user users, float amount);
+void loan(vector<user>& users, float amount);
+void Withdraw(vector<user>& users);
+void transfer(vector<user>& users);
+void viewTransactions(vector<user> users);
 int main() {
 	vector<user> users;
-	bool signedUp = false;
-	while (!signedUp) {
-		signedUp= signUp(users);
-	}
-	signedUp = 0;
-	while (!signedUp) {
-		signedUp = login(users);
-	}
-	signedUp = 0;
-	while (!signedUp) {
-		signedUp = freeze(users[users.size() - 1].accountNum, users);
-	}
-	signedUp = 0;
-	while (!signedUp) {
-		signedUp = login(users);
-	}
-	signedUp = 0;
-	while (!signedUp) {
-		signedUp = unFreeze(users[users.size() - 1].accountNum, users);
-	}
-	signedUp = 0;
-	while (!signedUp) {
-		signedUp = login(users);
-	}
+	//ading two users to the vectors
+	signUp(users);
+	signUp(users);
+	//login to the first user and perform all transaction 
+	login(users);
+	Withdraw(users);
+	float amount;
+	cin >> amount;
+	loan(users,amount);
+	// to know the accNum of the user you'll transfer to as it's randomly generated 
+	cout << users[1].accountNum<<endl;
+	transfer(users);
+	viewTransactions(users);
+	//login to the second user to make sure that transfer transaction exists
+	login(users);
+	viewTransactions(users);
+	// that the balance of the users has changed 
+	cout << users[0].balance << endl;
+	//cout << users[1].balance << endl;
 
 	
 }
@@ -164,7 +168,6 @@ bool find(int accountNumber, vector<user> users) {
 	}
 	return false;
 }
-
 bool addEmployee(vector<user>& users) {
 	user newEmployee;
 	cout << "Enter employee name " << endl;
@@ -205,5 +208,117 @@ bool unFreeze(int accNum, vector<user>& users)
 	return true;
 
 }
+ 
+
+//second video
+bool validBalance(user users, float amount) {
 
 
+
+	if (users.balance - amount <= 0) {
+		return false;
+
+	}
+	 if (amount < 50) {
+		return false;
+
+	}
+
+		return true;
+
+
+}
+void loan(vector<user>& users, float amount) {
+	transaction loanTransaction;
+
+	if (amount * 0.25 >= users[thisUserIndex].balance) {
+		cout << "Rejected due to low balance " << endl;
+	}
+
+
+	else {
+		if (amount > 100000) {
+			months = ((amount + users[thisUserIndex].balance) / amount) * 6;
+		}
+		else {
+			months = (amount + users[thisUserIndex].balance) / amount;
+		}
+		cout << "loan is accepted and have to be returned by " << months << " months" << endl;
+
+		loanTransaction.transactionType = "loan";
+		loanTransaction.transactionAmount = amount;
+		users[thisUserIndex].balance += amount;
+		users[thisUserIndex].transactionCount++;
+		users[thisUserIndex].userTransaction.push_back(loanTransaction);
+
+	}
+}
+void Withdraw(vector<user>& users) {
+	float amount;
+	transaction withdrawTransaction;
+	cout << "Please enter the amount needed to withdraw"<<endl;
+	cin >> amount;
+	if (!validBalance(users[thisUserIndex],amount)) {
+		cout << "Not enough balance"<<endl;
+	}
+	else {
+		users[thisUserIndex].balance -= amount;
+		users[thisUserIndex].transactionCount++;
+		cout << withdrawTransaction.transactionAmount << endl;
+		users[thisUserIndex].userTransaction.push_back(withdrawTransaction);
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = "noRecepient";
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "withdrawl";
+
+		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " " << "in your account "<<endl;
+		cout << thisUserIndex << endl;
+	}
+
+};
+void transfer(vector<user>& users) {
+	float amount;
+	int accNum;
+	string accNumString;
+	transaction temp;
+	cout << "Please Enter the amount you need to transfer\n";
+	cin >> amount;
+	if (users[thisUserIndex].balance - amount < 0) {
+		cout << "Not enough balance\n";
+	}
+	else {
+		cout << "Please Enter the account number that you want to transfer this amount to\n";
+		cin >> accNum;
+		if (find(accNum, users)) {
+			users[thisUserIndex].balance -= amount;
+			users[anotherUserIndex].balance += amount;
+			users[thisUserIndex].transactionCount++;
+			users[anotherUserIndex].transactionCount++;
+			accNumString = to_string(accNum);
+			users[thisUserIndex].userTransaction.push_back(temp);
+			users[anotherUserIndex].userTransaction.push_back(temp);
+			// saving transaction for the sender
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = accNumString;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "transfer";
+
+			// saving transaction for the reciever 
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].recepient = to_string(users[thisUserIndex].accountNum);
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionType = "transfer";
+			cout << "You have transferred amount of " << amount << " to the account " << accNum << endl;
+		}
+		else {
+			cout << "This acount does not exist"<<endl;
+		}
+	}
+};
+void viewTransactions(vector<user> users) {
+	int index = users[thisUserIndex].transactionCount - 1;
+	for (int i = index; i >= 0; i--) {
+		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType <<
+			" with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount <<
+			" to " << users[thisUserIndex].userTransaction[i].recepient << endl;
+		if (i == index - 4)
+			break;
+	}
+}
