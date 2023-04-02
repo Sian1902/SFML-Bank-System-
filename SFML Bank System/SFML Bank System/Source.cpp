@@ -2,6 +2,8 @@
 #include <fstream>
 #include <vector>
 #include<sstream>
+#include<SFML/Graphics.hpp>
+using namespace sf;
 using namespace std;
 int thisUserIndex = 0;
 int months;
@@ -51,28 +53,222 @@ void loan(vector<user>& users, float amount);
 void Withdraw(vector<user>& users);
 void transfer(vector<user>& users);
 void viewTransactions(vector<user> users);
-int main() {
-	vector<user> users;
-	//ading two users to the vectors
-	signUp(users);
-	signUp(users);
-	//login to the first user and perform all transaction 
-	login(users);
-	Withdraw(users);
-	float amount;
-	cin >> amount;
-	loan(users,amount);
-	// to know the accNum of the user you'll transfer to as it's randomly generated 
-	cout << users[1].accountNum<<endl;
-	transfer(users);
-	viewTransactions(users);
-	//login to the second user to make sure that transfer transaction exists
-	login(users);
-	viewTransactions(users);
-	// that the balance of the users has changed 
-	cout << users[0].balance << endl;
-	//cout << users[1].balance << endl;
 
+
+int main() {
+	RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Fullscreen);
+	////textures and loading them
+	Texture headerTexture, closeTexture, mininmizeTexture, optionsTexture, backgroundTexture, bigButtonTexture, smallButtonTexture, darkBackgroundTexture, darkBackgroundSmallTexture, enterValuesBackgroundTexture;
+	headerTexture.loadFromFile("Assets/header.png");
+	closeTexture.loadFromFile("Assets/close.png");
+	mininmizeTexture.loadFromFile("Assets/minimize.png");
+	optionsTexture.loadFromFile("Assets/options.png");
+	backgroundTexture.loadFromFile("Assets/background.png");
+	bigButtonTexture.loadFromFile("Assets/big button.png");
+	smallButtonTexture.loadFromFile("Assets/samll button.png");
+	darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
+	darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
+	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
+	////sprites 
+	Sprite background, header, closeBtn, minimizeBtn, optionsBtn, bigButton, smallButton[6], darkBackground, mediumDarkBackground, enterValuesBackground[2];
+	background.setTexture(backgroundTexture);
+	header.setTexture(headerTexture);
+	closeBtn.setTexture(closeTexture);
+	minimizeBtn.setTexture(mininmizeTexture);
+	optionsBtn.setTexture(optionsTexture);
+	bigButton.setTexture(bigButtonTexture);
+	for (int i = 0;i < 6;i++) {
+		smallButton[i].setTexture(smallButtonTexture);
+	}
+	darkBackground.setTexture(darkBackgroundTexture);
+	mediumDarkBackground.setTexture(darkBackgroundSmallTexture);
+	for (int i = 0;i < 2;i++) {
+		enterValuesBackground[i].setTexture(enterValuesBackgroundTexture);
+	}
+	////fonts and loading them
+	Font rockebFont, britanicFont, berlinSansFont;
+	rockebFont.loadFromFile("Fonts/rockeb.ttf");
+	britanicFont.loadFromFile("Fonts/BRITANIC.ttf");
+	berlinSansFont.loadFromFile("Fonts/Berlin Sans FB Regular.ttf");
+	////texts
+	Text haithamBankText, balanceText, userBalance, transferBalance1, transferBalance2, withdraw, withdraw1, lastTransactions, askForLoan, askForLoan1, amount, toText, goodMorning, userName;
+	////background modification
+	background.setScale(1.5, 1.5);
+	background.setPosition(-50, 0);
+	////header modification
+	header.setPosition(0, 0);
+	header.setScale(1.11, 1.11);
+	//buttons modification
+	closeBtn.setPosition(1850, 30);
+	minimizeBtn.setPosition(1780, 45);
+	optionsBtn.setPosition(1200, 75);
+	//good morning text
+	goodMorning.setFont(berlinSansFont);
+	goodMorning.setString("Good Morning,");
+	goodMorning.setCharacterSize(60);
+	goodMorning.setFillColor(Color::White);
+	goodMorning.setPosition(50, 30);
+	//username text
+	userName.setFont(berlinSansFont);
+	userName.setString("User");
+	userName.setCharacterSize(70);
+	userName.setFillColor(Color::White);
+	userName.setPosition(100, 80);
+
+	//haitham bank text
+	haithamBankText.setString("Haitham Bank");
+	haithamBankText.setFont(berlinSansFont);
+	haithamBankText.setCharacterSize(70);
+	haithamBankText.setFillColor(Color::White);
+	haithamBankText.setPosition(750, 45);
+	//small dark background
+	mediumDarkBackground.setPosition(60, 250);
+	mediumDarkBackground.setScale(1.16, 1.07);
+	////inside small box
+	// balance text
+	balanceText.setFont(rockebFont);
+	balanceText.setString("Balance");
+	balanceText.setCharacterSize(80);
+	balanceText.setFillColor(Color::White);
+	balanceText.setPosition(150, 260);
+	//user's balance text
+	userBalance.setFont(rockebFont);
+	userBalance.setString("0,0 EGP");
+	userBalance.setCharacterSize(60);
+	userBalance.setFillColor(Color::White);
+	userBalance.setPosition(170, 350);
+
+
+	//buttons in small dark background
+	for (int i = 0;i < 2;i++) {
+		smallButton[i].setScale(1.3, 1.1);
+		smallButton[i].setPosition(1370, 265 + (i * 100));
+	}
+	//add balance text
+
+	//big dark background
+	darkBackground.setPosition(710, 500);
+	darkBackground.setScale(1.11, 1.105);
+	////inside big dark box when tranferBalance
+	bigButton.setPosition(1000, 530);
+	bigButton.setScale(1.1, 1.1);
+	for (int i = 0;i < 2;i++) {
+		enterValuesBackground[i].setPosition(1000, 650 + (i * 100));
+	}
+	//transfer balance text
+	transferBalance2.setFont(rockebFont);
+	transferBalance2.setString("Transfer  Balance");
+	transferBalance2.setFillColor(Color::White);
+	transferBalance2.setPosition(1100, 555);
+	//withdraw text
+	withdraw1.setFont(rockebFont);
+	withdraw1.setString("Withdraw");
+	withdraw1.setFillColor(Color::White);
+	withdraw1.setPosition(1130, 548);
+	withdraw1.setCharacterSize(40);
+	//ask for loan text
+	askForLoan1.setFont(rockebFont);
+	askForLoan1.setString("Ask for a Loan");
+	askForLoan1.setFillColor(Color::White);
+	askForLoan1.setPosition(1120, 555);
+
+	//amount text
+	amount.setFont(rockebFont);
+	amount.setString("Amount");
+	amount.setFillColor(Color::White);
+	amount.setPosition(820, 670);
+	//to text
+	toText.setFont(rockebFont);
+	toText.setString("To");
+	toText.setFillColor(Color::White);
+	toText.setPosition(870, 770);
+
+
+
+	////Buttons beside big box
+	for (int i = 2;i < 6;i++) {
+		smallButton[i].setPosition(80, 500 + ((i - 2) * 115));
+		smallButton[i].setScale(1.2, 1.2);
+	}
+	//transfer balance text
+	transferBalance1.setFont(rockebFont);
+	transferBalance1.setString("Transfer Balance");
+	transferBalance1.setFillColor(Color::White);
+	transferBalance1.setPosition(130, 525);
+	//withdraw text
+	withdraw.setFont(rockebFont);
+	withdraw.setString("Withdraw");
+	withdraw.setFillColor(Color::White);
+	withdraw.setPosition(185, 643);
+	//last transcations text
+	lastTransactions.setFont(rockebFont);
+	lastTransactions.setString("Last Transactions");
+	lastTransactions.setFillColor(Color::White);
+	lastTransactions.setPosition(125, 760);
+	//ask for loan text
+	askForLoan.setFont(rockebFont);
+	askForLoan.setString("Ask for a Loan");
+	askForLoan.setFillColor(Color::White);
+	askForLoan.setPosition(150, 875);
+
+
+	while (window.isOpen())
+	{
+		Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+
+		window.clear();
+		window.draw(background);
+		//header
+		window.draw(header);
+		window.draw(closeBtn);
+		window.draw(minimizeBtn);
+		window.draw(optionsBtn);
+		window.draw(haithamBankText);
+		window.draw(goodMorning);
+		window.draw(userName);
+		////small box
+		window.draw(mediumDarkBackground);
+		//texts inside small box
+		window.draw(balanceText);
+		window.draw(userBalance);
+		//large dark box
+		window.draw(darkBackground);
+		//inside big dark box when transferBalance
+		window.draw(bigButton);
+		for (int i = 0;i < 2;i++) {
+			window.draw(enterValuesBackground[i]);
+		}
+		window.draw(transferBalance2);
+		window.draw(amount);
+		window.draw(toText);
+		//inside big box when withdraw or ask for loan
+		/* window.draw(bigButton);
+		for (int i = 0;i < 1;i++) {
+			window.draw(enterValuesBackground[i]);
+		}
+		if withdraw
+			window.draw(withdraw1);
+		if ask for loan
+			window.draw(askForLoan1);
+		window.draw(amount);*/
+
+		//buttons beside big box
+		for (int i = 2;i < 6;i++) {
+			window.draw(smallButton[i]);
+		}
+		window.draw(transferBalance1);
+		window.draw(withdraw);
+		window.draw(lastTransactions);
+		window.draw(askForLoan);
+		window.display();
+	}
+
+	return 0;
 	
 }
 bool login(vector<user>& users) {
