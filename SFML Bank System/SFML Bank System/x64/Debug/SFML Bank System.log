@@ -1,5 +1,6 @@
 ﻿  Source.cpp
-C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(242,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(245,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(95): warning C4715: 'login': not all control paths return a value
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(234,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(237,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(89): warning C4715: 'login': not all control paths return a value
+  LINK : C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe not found or not built by the last incremental link; performing full link
   SFML Bank System.vcxproj -> C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe

@@ -51,27 +51,20 @@ void loan(vector<user>& users, float amount);
 void Withdraw(vector<user>& users);
 void transfer(vector<user>& users);
 void viewTransactions(vector<user> users);
+
+
+
+//third video
+void write(vector<user> users);
+void read(vector<user>& users);
+
+
 int main() {
 	vector<user> users;
-	//ading two users to the vectors
-	signUp(users);
-	signUp(users);
-	//login to the first user and perform all transaction 
+	read(users);
 	login(users);
 	Withdraw(users);
-	float amount;
-	cin >> amount;
-	loan(users,amount);
-	// to know the accNum of the user you'll transfer to as it's randomly generated 
-	cout << users[1].accountNum<<endl;
-	transfer(users);
-	viewTransactions(users);
-	//login to the second user to make sure that transfer transaction exists
-	login(users);
-	viewTransactions(users);
-	// that the balance of the users has changed 
-	cout << users[0].balance << endl;
-	//cout << users[1].balance << endl;
+	write(users);
 
 	
 }
@@ -321,4 +314,45 @@ void viewTransactions(vector<user> users) {
 		if (i == index - 4)
 			break;
 	}
+}
+
+//third video
+void write(vector<user> users) {
+
+	fstream out("userData.txt", ios::out);
+	if (!out) {
+		cout << "file not found";
+		return;
+	}
+	for (int i = 0; i < users.size() - 1; i++) {
+		out << users[i].accountNum << " " << users[i].userAccount.userName << " " << users[i].userAccount.email << " " << users[i].phoneNumber << " " <<
+			users[i].balance << " " << users[i].transactionCount << " " << users[i].age << " " << users[i].userAccount.password << " " << users[i].frozen << endl;
+		for (int j = 0; j < users[i].transactionCount; j++) {
+			out << users[i].userTransaction[j].recepient << " " << users[i].userTransaction[j].transactionType << " " << users[i].userTransaction[j].transactionAmount << endl;
+		}
+
+	}
+	out.close();
+}
+void read(vector<user>& users) {
+	user temp;
+	transaction transactiontemp;
+
+	ifstream in("userData.txt");
+	if (!in) {
+		cout << "file not found";
+		return;
+	}
+
+	for (int i = 0; !in.eof(); i++) {
+		in >> temp.accountNum >> temp.userAccount.userName >> temp.userAccount.email >> temp.phoneNumber >>
+			temp.balance >> temp.transactionCount >> temp.age >> temp.userAccount.password >> temp.frozen;
+		for (int j = 0; j < temp.transactionCount; j++) {
+			temp.userTransaction.push_back(transactiontemp);
+			in >> temp.userTransaction[j].recepient >> temp.userTransaction[j].transactionType >> temp.userTransaction[j].transactionAmount;
+
+		}
+		users.push_back(temp);
+	}
+	in.close();
 }
