@@ -8,6 +8,11 @@ using namespace std;
 int thisUserIndex = 0;
 int months;
 int anotherUserIndex;
+// GUI global variables 
+
+Font rockebFont, britanicFont, berlinSansFont;
+Texture headerTexture, closeTexture, mininmizeTexture, optionsTexture, backgroundTexture, bigButtonTexture, smallButtonTexture, darkBackgroundTexture, darkBackgroundSmallTexture, enterValuesBackgroundTexture;
+
 
 RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Default);
 
@@ -42,6 +47,11 @@ struct button {
 	Text btnText;
 	Sprite btnSprite;
 };
+struct balancePanel {
+	Sprite panel;
+	Text balnceText;
+	Text amountText;
+};
 
 // system functions  
 
@@ -63,49 +73,33 @@ void Withdraw(vector<user>& users);
 void transfer(vector<user>& users);
 void viewTransactions(vector<user> users);
 
-
 //GUI functions
 
 void btnIntializer(button btn[], int arrSize);
 void sideButtonDrawer(button btn[] ,int arrSize);
-Font btnFont;
-Texture btnTexture;
+void texturesAndFonts();
+void balancePanelIntializer(balancePanel& panel);
+void balancePanelDrawer(balancePanel& panel);
 int main() {
+	// loading fonts and textures
+	texturesAndFonts();
 
-
-	////textures and loading them
-	Texture headerTexture, closeTexture, mininmizeTexture, optionsTexture, backgroundTexture, bigButtonTexture, smallButtonTexture, darkBackgroundTexture, darkBackgroundSmallTexture, enterValuesBackgroundTexture;
-	headerTexture.loadFromFile("Assets/header.png");
-	closeTexture.loadFromFile("Assets/close.png");
-	mininmizeTexture.loadFromFile("Assets/minimize.png");
-	optionsTexture.loadFromFile("Assets/options.png");
-	backgroundTexture.loadFromFile("Assets/background.png");
-	bigButtonTexture.loadFromFile("Assets/big button.png");
-	smallButtonTexture.loadFromFile("Assets/samll button.png");
-	darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
-	darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
-	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
 	////sprites 
-	Sprite background, header, closeBtn, minimizeBtn, optionsBtn, bigButton , darkBackground, mediumDarkBackground, enterValuesBackground[2];
+	Sprite background, header, closeBtn, minimizeBtn, optionsBtn, bigButton , darkBackground,  enterValuesBackground[2];
 	background.setTexture(backgroundTexture);
 	header.setTexture(headerTexture);
 	closeBtn.setTexture(closeTexture);
 	minimizeBtn.setTexture(mininmizeTexture);
 	optionsBtn.setTexture(optionsTexture);
 	bigButton.setTexture(bigButtonTexture);
-	
 	darkBackground.setTexture(darkBackgroundTexture);
-	mediumDarkBackground.setTexture(darkBackgroundSmallTexture);
 	for (int i = 0;i < 2;i++) {
 		enterValuesBackground[i].setTexture(enterValuesBackgroundTexture);
 	}
-	////fonts and loading them
-	Font rockebFont, britanicFont, berlinSansFont;
-	rockebFont.loadFromFile("Fonts/rockeb.ttf");
-	britanicFont.loadFromFile("Fonts/BRITANIC.ttf");
-	berlinSansFont.loadFromFile("Fonts/Berlin Sans FB Regular.ttf");
+
+
 	////texts
-	Text haithamBankText, balanceText, userBalance, transferBalance1, transferBalance2, withdraw, withdraw1, lastTransactions, askForLoan, askForLoan1, amount, toText, goodMorning, userName;
+	Text haithamBankText, transferBalance1, transferBalance2, withdraw, withdraw1, lastTransactions, askForLoan, askForLoan1, amount, toText, goodMorning, userName;
 	////background modification
 	background.setScale(1.5, 1.5);
 	background.setPosition(-50, 0);
@@ -135,22 +129,6 @@ int main() {
 	haithamBankText.setCharacterSize(70);
 	haithamBankText.setFillColor(Color::White);
 	haithamBankText.setPosition(750, 45);
-	//small dark background
-	mediumDarkBackground.setPosition(60, 250);
-	mediumDarkBackground.setScale(1.16, 1.07);
-	////inside small box
-	// balance text
-	balanceText.setFont(rockebFont);
-	balanceText.setString("Balance");
-	balanceText.setCharacterSize(80);
-	balanceText.setFillColor(Color::White);
-	balanceText.setPosition(150, 260);
-	//user's balance text
-	userBalance.setFont(rockebFont);
-	userBalance.setString("0,0 EGP");
-	userBalance.setCharacterSize(60);
-	userBalance.setFillColor(Color::White);
-	userBalance.setPosition(170, 350);
 
 	//big dark background
 	darkBackground.setPosition(710, 500);
@@ -192,6 +170,8 @@ int main() {
 
 
 	button sideButtons[4];
+	balancePanel panel;
+	balancePanelIntializer(panel);
 	btnIntializer(sideButtons, 4);
 	while (window.isOpen())
 	{
@@ -216,11 +196,7 @@ int main() {
 		window.draw(haithamBankText);
 		window.draw(goodMorning);
 		window.draw(userName);
-		////small box
-		window.draw(mediumDarkBackground);
-		//texts inside small box
-		window.draw(balanceText);
-		window.draw(userBalance);
+		balancePanelDrawer(panel);
 		//large dark box
 		window.draw(darkBackground);
 		//inside big dark box when transferBalance
@@ -514,13 +490,13 @@ void viewTransactions(vector<user> users) {
 void btnIntializer(button btn[], int arrSize) {
 
 
-	btnFont.loadFromFile("Fonts/rockeb.ttf");
-	btnTexture.loadFromFile("Assets/samll button.png");
+	rockebFont.loadFromFile("Fonts/rockeb.ttf");
+	smallButtonTexture.loadFromFile("Assets/samll button.png");
 	string btnstring[4] = { "Transfer Balance","Withdraw","Last Transactions","Ask for a Loan" };
 
 	for (int i = 0; i < arrSize; i++) {
-		btn[i].btnSprite.setTexture(btnTexture);
-		btn[i].btnText.setFont(btnFont);
+		btn[i].btnSprite.setTexture(smallButtonTexture);
+		btn[i].btnText.setFont(rockebFont);
 		btn[i].btnText.setFillColor(Color::White);
 		btn[i].btnSprite.setPosition(80, 500 + ((i ) * 115));
 		btn[i].btnSprite.setScale(1.2, 1.2);
@@ -531,11 +507,47 @@ void btnIntializer(button btn[], int arrSize) {
 	btn[2].btnText.setPosition(125, 760);
 	btn[3].btnText.setPosition(150, 875);
 }
+void texturesAndFonts() {
+	headerTexture.loadFromFile("Assets/header.png");
+	closeTexture.loadFromFile("Assets/close.png");
+	mininmizeTexture.loadFromFile("Assets/minimize.png");
+	optionsTexture.loadFromFile("Assets/options.png");
+	backgroundTexture.loadFromFile("Assets/background.png");
+	bigButtonTexture.loadFromFile("Assets/big button.png");
+	smallButtonTexture.loadFromFile("Assets/samll button.png");
+	darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
+	darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
+	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
+	rockebFont.loadFromFile("Fonts/rockeb.ttf");
+	britanicFont.loadFromFile("Fonts/BRITANIC.ttf");
+	berlinSansFont.loadFromFile("Fonts/Berlin Sans FB Regular.ttf");
+}
+void balancePanelIntializer(balancePanel& panel) {
+	panel.panel.setTexture(darkBackgroundSmallTexture);
+	panel.panel.setPosition(60, 250);
+	panel.panel.setScale(1.16, 1.07);
+	panel.balnceText.setFont(rockebFont);
+	panel.balnceText.setString("Balance");
+	panel.balnceText.setCharacterSize(80);
+	panel.balnceText.setFillColor(Color::White);
+	panel.balnceText.setPosition(150, 260);
+	panel.amountText.setFont(rockebFont);
+	panel.amountText.setString("0,0 EGP");
+	panel.amountText.setCharacterSize(60);
+	panel.amountText.setFillColor(Color::White);
+	panel.amountText.setPosition(170, 350);
 
+}
 void sideButtonDrawer(button btn[], int arrSize) {
-	for (int i = 0; i < arrSize;i++) {
+	for (int i = 0; i < arrSize; i++) {
 		window.draw(btn[i].btnSprite);
 		window.draw(btn[i].btnText);
 	}
+}
+void balancePanelDrawer(balancePanel& panel) {
+	window.draw(panel.panel);
+	window.draw(panel.balnceText);
+	window.draw(panel.amountText);
+
 }
 
