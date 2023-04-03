@@ -1,2 +1,16 @@
 ﻿  Source.cpp
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(114,28): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(140,42): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(157,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(160,29): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(162,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(324,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(332,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(340,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(349,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(427,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(430,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(525,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(526,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(282): warning C4715: 'login': not all control paths return a value
   SFML Bank System.vcxproj -> C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\Debug\SFML Bank System.exe

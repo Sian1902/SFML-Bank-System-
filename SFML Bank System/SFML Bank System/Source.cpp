@@ -9,7 +9,9 @@ int thisUserIndex = 0;
 int months;
 int anotherUserIndex;
 
+RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Default);
 
+//system entities struct
 struct account
 {
 	string userName;
@@ -33,6 +35,16 @@ struct user {
 
 };
 
+// GUI entities struct 
+
+struct button {
+	
+	Text btnText;
+	Sprite btnSprite;
+};
+
+// system functions  
+
 bool findPhone(string phoneNumber, vector<user> users);
 bool findEmail(string email, vector<user> users);
 bool find(string email, string password, vector<user> users);
@@ -40,12 +52,9 @@ bool find(int accounNumber, vector<user> users);
 
 bool addEmployee(vector<user>& users);
 bool signUp(vector<user>& users);
-bool login(vector<user>& users);
+bool login(vector<user> users);
 bool freeze(int accountNumber, vector<user>& users);
 bool unFreeze(int accountNumber, vector<user>& users);
-
-
-
 
 //second video
 bool validBalance(user users, float amount);
@@ -55,8 +64,15 @@ void transfer(vector<user>& users);
 void viewTransactions(vector<user> users);
 
 
+//GUI functions
+
+void btnIntializer(button btn[], int arrSize);
+void sideButtonDrawer(button btn[] ,int arrSize);
+Font btnFont;
+Texture btnTexture;
 int main() {
-	RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Fullscreen);
+
+
 	////textures and loading them
 	Texture headerTexture, closeTexture, mininmizeTexture, optionsTexture, backgroundTexture, bigButtonTexture, smallButtonTexture, darkBackgroundTexture, darkBackgroundSmallTexture, enterValuesBackgroundTexture;
 	headerTexture.loadFromFile("Assets/header.png");
@@ -70,16 +86,14 @@ int main() {
 	darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
 	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
 	////sprites 
-	Sprite background, header, closeBtn, minimizeBtn, optionsBtn, bigButton, smallButton[6], darkBackground, mediumDarkBackground, enterValuesBackground[2];
+	Sprite background, header, closeBtn, minimizeBtn, optionsBtn, bigButton , darkBackground, mediumDarkBackground, enterValuesBackground[2];
 	background.setTexture(backgroundTexture);
 	header.setTexture(headerTexture);
 	closeBtn.setTexture(closeTexture);
 	minimizeBtn.setTexture(mininmizeTexture);
 	optionsBtn.setTexture(optionsTexture);
 	bigButton.setTexture(bigButtonTexture);
-	for (int i = 0;i < 6;i++) {
-		smallButton[i].setTexture(smallButtonTexture);
-	}
+	
 	darkBackground.setTexture(darkBackgroundTexture);
 	mediumDarkBackground.setTexture(darkBackgroundSmallTexture);
 	for (int i = 0;i < 2;i++) {
@@ -138,14 +152,6 @@ int main() {
 	userBalance.setFillColor(Color::White);
 	userBalance.setPosition(170, 350);
 
-
-	//buttons in small dark background
-	for (int i = 0;i < 2;i++) {
-		smallButton[i].setScale(1.3, 1.1);
-		smallButton[i].setPosition(1370, 265 + (i * 100));
-	}
-	//add balance text
-
 	//big dark background
 	darkBackground.setPosition(710, 500);
 	darkBackground.setScale(1.11, 1.105);
@@ -185,35 +191,14 @@ int main() {
 
 
 
-	////Buttons beside big box
-	for (int i = 2;i < 6;i++) {
-		smallButton[i].setPosition(80, 500 + ((i - 2) * 115));
-		smallButton[i].setScale(1.2, 1.2);
-	}
-	//transfer balance text
-	transferBalance1.setFont(rockebFont);
-	transferBalance1.setString("Transfer Balance");
-	transferBalance1.setFillColor(Color::White);
-	transferBalance1.setPosition(130, 525);
-	//withdraw text
-	withdraw.setFont(rockebFont);
-	withdraw.setString("Withdraw");
-	withdraw.setFillColor(Color::White);
-	withdraw.setPosition(185, 643);
-	//last transcations text
-	lastTransactions.setFont(rockebFont);
-	lastTransactions.setString("Last Transactions");
-	lastTransactions.setFillColor(Color::White);
-	lastTransactions.setPosition(125, 760);
-	//ask for loan text
-	askForLoan.setFont(rockebFont);
-	askForLoan.setString("Ask for a Loan");
-	askForLoan.setFillColor(Color::White);
-	askForLoan.setPosition(150, 875);
-
-
+	button sideButtons[4];
+	btnIntializer(sideButtons, 4);
 	while (window.isOpen())
 	{
+		if (Keyboard::isKeyPressed(Keyboard::Key::M)) {
+			//window.setSize(0,1080);
+		}
+
 		Event event;
 		while (window.pollEvent(event))
 		{
@@ -221,7 +206,7 @@ int main() {
 				window.close();
 		}
 
-		window.clear();
+		window.clear(Color::Transparent);
 		window.draw(background);
 		//header
 		window.draw(header);
@@ -258,9 +243,8 @@ int main() {
 		window.draw(amount);*/
 
 		//buttons beside big box
-		for (int i = 2;i < 6;i++) {
-			window.draw(smallButton[i]);
-		}
+		sideButtonDrawer(sideButtons, 4);
+
 		window.draw(transferBalance1);
 		window.draw(withdraw);
 		window.draw(lastTransactions);
@@ -271,7 +255,13 @@ int main() {
 	return 0;
 	
 }
-bool login(vector<user>& users) {
+
+// functions implementation 
+
+
+// system functions 
+
+bool login(vector<user> users) {
 	user temp;
 	cout << "enter email"<<endl;
 	cin >> temp.userAccount.email;
@@ -518,3 +508,34 @@ void viewTransactions(vector<user> users) {
 			break;
 	}
 }
+
+///GUI functiuons
+
+void btnIntializer(button btn[], int arrSize) {
+
+
+	btnFont.loadFromFile("Fonts/rockeb.ttf");
+	btnTexture.loadFromFile("Assets/samll button.png");
+	string btnstring[4] = { "Transfer Balance","Withdraw","Last Transactions","Ask for a Loan" };
+
+	for (int i = 0; i < arrSize; i++) {
+		btn[i].btnSprite.setTexture(btnTexture);
+		btn[i].btnText.setFont(btnFont);
+		btn[i].btnText.setFillColor(Color::White);
+		btn[i].btnSprite.setPosition(80, 500 + ((i ) * 115));
+		btn[i].btnSprite.setScale(1.2, 1.2);
+		btn[i].btnText.setString(btnstring[i]);
+	}
+	btn[0].btnText.setPosition(130, 525);
+	btn[1].btnText.setPosition(185, 643);
+	btn[2].btnText.setPosition(125, 760);
+	btn[3].btnText.setPosition(150, 875);
+}
+
+void sideButtonDrawer(button btn[], int arrSize) {
+	for (int i = 0; i < arrSize;i++) {
+		window.draw(btn[i].btnSprite);
+		window.draw(btn[i].btnText);
+	}
+}
+
