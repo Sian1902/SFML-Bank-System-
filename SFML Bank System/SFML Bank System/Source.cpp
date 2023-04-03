@@ -10,13 +10,11 @@ int months;
 int anotherUserIndex;
 // GUI global variables 
 
+RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Fullscreen);
 Font rockebFont, britanicFont, berlinSansFont;
 Texture headerTexture, closeTexture, mininmizeTexture, optionsTexture, backgroundTexture, bigButtonTexture, smallButtonTexture, darkBackgroundTexture, darkBackgroundSmallTexture, enterValuesBackgroundTexture;
 
 
-RenderWindow window(sf::VideoMode(1920, 1080), "HaithamBank", Style::Default);
-
-//system entities struct
 struct account
 {
 	string userName;
@@ -39,6 +37,30 @@ struct user {
 	int transactionCount = 0;
 
 };
+
+struct bigDarkBox {
+	Sprite background;
+	Sprite valueField1;
+	Sprite valueField2;
+	Text amountTxt;
+	Text Totxt;
+};
+struct button {
+	Sprite buttonSprite;
+	Text text;
+};
+struct Header {
+	Sprite background, closeBtn, minimizeBtn, optionsBtn;
+	Text goodMorning, user, haithamBank;
+
+};
+
+void setbigDarkBoxTransferBalance(bigDarkBox&, button&);
+void setHeader(Header&);
+void setButton(button&);
+void drawBigBox(bigDarkBox, button);
+void drawHeader(Header);
+
 
 // GUI entities struct 
 
@@ -81,6 +103,52 @@ void texturesAndFonts();
 void balancePanelIntializer(balancePanel& panel);
 void balancePanelDrawer(balancePanel& panel);
 int main() {
+
+	////sprites 
+	Sprite background;
+	background.setTexture(backgroundTexture);
+
+
+
+	////background modification
+	background.setScale(1.5, 1.5);
+	background.setPosition(-50, 0);
+
+	
+
+
+
+	
+
+
+	while (window.isOpen())
+	{
+		Event event;
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				window.close();
+		}
+		bigDarkBox bigdarkBox;
+		button btn;
+		Header header;
+		setbigDarkBoxTransferBalance(bigdarkBox,btn);
+		setHeader(header);
+		window.clear();
+		window.draw(background);
+		
+
+		
+		
+		drawBigBox(bigdarkBox,btn);
+		drawHeader(header);
+		window.display();
+	}
+
+	return 0;
+
+}
+bool login(vector<user>& users) {
 	// loading fonts and textures
 	texturesAndFonts();
 
@@ -208,16 +276,7 @@ int main() {
 		window.draw(amount);
 		window.draw(toText);
 		//inside big box when withdraw or ask for loan
-		/* window.draw(bigButton);
-		for (int i = 0;i < 1;i++) {
-			window.draw(enterValuesBackground[i]);
-		}
-		if withdraw
-			window.draw(withdraw1);
-		if ask for loan
-			window.draw(askForLoan1);
-		window.draw(amount);*/
-
+		
 		//buttons beside big box
 		sideButtonDrawer(sideButtons, 4);
 
@@ -239,15 +298,15 @@ int main() {
 
 bool login(vector<user> users) {
 	user temp;
-	cout << "enter email"<<endl;
+	cout << "enter email" << endl;
 	cin >> temp.userAccount.email;
-	cout << "enter password"<<endl;
+	cout << "enter password" << endl;
 	cin >> temp.userAccount.password;
 	if (!find(temp.userAccount.email, temp.userAccount.password, users)) {
 		cout << "email and password doesn't match" << endl;
 		return false;
 	}
-	if (users[thisUserIndex].frozen==true) {
+	if (users[thisUserIndex].frozen == true) {
 		cout << "this account is frozen" << endl;
 		return false;
 	}
@@ -260,32 +319,32 @@ bool signUp(vector<user>& users) {
 	user temp;
 	cout << "enter name\n";
 	cin >> temp.userAccount.userName;
-	cout << "enter email"<<endl;
+	cout << "enter email" << endl;
 	cin >> temp.userAccount.email;
 	if (findEmail(temp.userAccount.email, users) || temp.userAccount.email.find("@user.bank") == string::npos) {
 		cout << "email is already in use enter another one make sure to include @user.bank\n";
 		return false;
 	}
-	cout << "enter password"<<endl;
+	cout << "enter password" << endl;
 	cin >> temp.userAccount.password;
-	cout << "enter phone number"<<endl;
+	cout << "enter phone number" << endl;
 	cin >> temp.phoneNumber;
 	if (findPhone(temp.phoneNumber, users)) {
-		cout << "phone number already taken"<<endl;
+		cout << "phone number already taken" << endl;
 		return false;
 	}
-	cout << "enter age"<<endl;
+	cout << "enter age" << endl;
 	cin >> temp.age;
 	if (temp.age < 21) {
-		cout << "invalid age"<<endl;
+		cout << "invalid age" << endl;
 		return false;
 	}
-	cout << "enter balance"<<endl;
+	cout << "enter balance" << endl;
 	cin >> temp.balance;
 	if (temp.balance < 300) {
-		cout << "balance can't be less than 300 EGP "<<endl;
+		cout << "balance can't be less than 300 EGP " << endl;
 		return false;
-		
+
 	}
 
 	temp.accountNum = (rand() % 101) + 100;
@@ -336,12 +395,49 @@ bool addEmployee(vector<user>& users) {
 	cin >> newEmployee.userAccount.userName;
 	cout << "Enter employee email " << endl;
 	cin >> newEmployee.userAccount.email;
-	if (findEmail(newEmployee.userAccount.email, users)|| newEmployee.userAccount.email.find("@employee.bank")==string::npos) {
+	if (findEmail(newEmployee.userAccount.email, users) || newEmployee.userAccount.email.find("@employee.bank") == string::npos) {
 		cout << "Email already in use enter another one make sure that your email contains @employee.bank" << endl;
 		return false;
 	}
 	cout << "Enter employee Password " << endl;
 	cin >> newEmployee.userAccount.password;
+	users.push_back(newEmployee);
+	return true;
+}
+bool freeze(int accNum, vector<user>& users)
+{
+	if (!find(accNum, users)) {
+		cout << "this user doesn't exist" << endl;
+		return false;
+	}
+	else if (find(accNum, users)) {
+		users[anotherUserIndex].frozen = true;
+		cout << "frozen" << endl;
+	}
+	return true;
+}
+bool unFreeze(int accNum, vector<user>& users)
+{
+	if (!find(accNum, users)) {
+		cout << "this user doesn't exist" << endl;
+		return false;
+	}
+	else if (find(accNum, users)) {
+		users[anotherUserIndex].frozen = false;
+		cout << "active" << endl;
+	}
+	return true;
+
+}
+
+
+//second video
+bool validBalance(user users, float amount) {
+
+
+
+	if (users.balance - amount <= 0) {
+		return false;
 	users.push_back(newEmployee);
 	return true;
 }
@@ -537,6 +633,57 @@ void balancePanelIntializer(balancePanel& panel) {
 	panel.amountText.setFillColor(Color::White);
 	panel.amountText.setPosition(170, 350);
 
+	}
+	if (amount < 50) {
+		return false;
+
+	}
+
+	return true;
+
+
+}
+void loan(vector<user>& users, float amount) {
+	transaction loanTransaction;
+
+	if (amount * 0.25 >= users[thisUserIndex].balance) {
+		cout << "Rejected due to low balance " << endl;
+	}
+
+
+	else {
+		if (amount > 100000) {
+			months = ((amount + users[thisUserIndex].balance) / amount) * 6;
+		}
+		else {
+			months = (amount + users[thisUserIndex].balance) / amount;
+		}
+		cout << "loan is accepted and have to be returned by " << months << " months" << endl;
+
+		loanTransaction.transactionType = "loan";
+		loanTransaction.transactionAmount = amount;
+		users[thisUserIndex].balance += amount;
+		users[thisUserIndex].transactionCount++;
+		users[thisUserIndex].userTransaction.push_back(loanTransaction);
+
+	}
+}
+void Withdraw(vector<user>& users) {
+	float amount;
+	transaction withdrawTransaction;
+	cout << "Please enter the amount needed to withdraw" << endl;
+	cin >> amount;
+	if (!validBalance(users[thisUserIndex], amount)) {
+		cout << "Not enough balance" << endl;
+	}
+	else {
+		users[thisUserIndex].balance -= amount;
+		users[thisUserIndex].transactionCount++;
+		cout << withdrawTransaction.transactionAmount << endl;
+		users[thisUserIndex].userTransaction.push_back(withdrawTransaction);
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = "noRecepient";
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "withdrawl";
 }
 void sideButtonDrawer(button btn[], int arrSize) {
 	for (int i = 0; i < arrSize; i++) {
@@ -550,4 +697,138 @@ void balancePanelDrawer(balancePanel& panel) {
 	window.draw(panel.amountText);
 
 }
+		cout << "you have withdrawn " << amount << " with remaining balance " << users[thisUserIndex].balance << " " << "in your account " << endl;
+		cout << thisUserIndex << endl;
+	}
 
+};
+void transfer(vector<user>& users) {
+	float amount;
+	int accNum;
+	string accNumString;
+	transaction temp;
+	cout << "Please Enter the amount you need to transfer\n";
+	cin >> amount;
+	if (users[thisUserIndex].balance - amount < 0) {
+		cout << "Not enough balance\n";
+	}
+	else {
+		cout << "Please Enter the account number that you want to transfer this amount to\n";
+		cin >> accNum;
+		if (find(accNum, users)) {
+			users[thisUserIndex].balance -= amount;
+			users[anotherUserIndex].balance += amount;
+			users[thisUserIndex].transactionCount++;
+			users[anotherUserIndex].transactionCount++;
+			accNumString = to_string(accNum);
+			users[thisUserIndex].userTransaction.push_back(temp);
+			users[anotherUserIndex].userTransaction.push_back(temp);
+			// saving transaction for the sender
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = accNumString;
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "transfer";
+
+			// saving transaction for the reciever 
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].recepient = to_string(users[thisUserIndex].accountNum);
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionType = "transfer";
+			cout << "You have transferred amount of " << amount << " to the account " << accNum << endl;
+		}
+		else {
+			cout << "This acount does not exist" << endl;
+		}
+	}
+};
+void viewTransactions(vector<user> users) {
+	int index = users[thisUserIndex].transactionCount - 1;
+	for (int i = index; i >= 0; i--) {
+		cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType <<
+			" with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount <<
+			" to " << users[thisUserIndex].userTransaction[i].recepient << endl;
+		if (i == index - 4)
+			break;
+	}
+}
+//sfml Functions
+void setbigDarkBoxTransferBalance(bigDarkBox& bigDarkbox, button& btn) {
+	String textArr[2] = { "Amount","To" };
+	darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
+	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
+	bigDarkbox.background.setTexture(darkBackgroundTexture);
+	bigDarkbox.background.setPosition(710, 500);
+	bigDarkbox.background.setScale(1.11, 1.105);
+	bigDarkbox.valueField1.setTexture(enterValuesBackgroundTexture);
+	bigDarkbox.valueField1.setPosition(1000, 650);
+	bigDarkbox.valueField2.setTexture(enterValuesBackgroundTexture);
+	bigDarkbox.valueField2.setPosition(1000, 750);
+	bigDarkbox.amountTxt.setFont(rockebFont);
+	bigDarkbox.amountTxt.setString(textArr[0]);
+	bigDarkbox.amountTxt.setFillColor(Color::White);
+	bigDarkbox.amountTxt.setPosition(820, 670);
+	bigDarkbox.Totxt.setFont(rockebFont);
+	bigDarkbox.Totxt.setString(textArr[1]);
+	bigDarkbox.Totxt.setFillColor(Color::White);
+	bigDarkbox.Totxt.setPosition(870, 770);
+	setButton(btn);
+}
+void drawBigBox(bigDarkBox bigDarkbox, button btn) {
+	window.draw(bigDarkbox.background);
+	window.draw(btn.buttonSprite);
+	window.draw(btn.text);
+	window.draw(bigDarkbox.valueField1);
+	window.draw(bigDarkbox.valueField2);
+	window.draw(bigDarkbox.amountTxt);
+	window.draw(bigDarkbox.Totxt);
+}
+void setButton(button& btn) {
+	String textArr[4] = {"Transfer Balance","Withdraw","Last Transactions","Ask for a Loan"};
+	bigButtonTexture.loadFromFile("Assets/big button.png");
+	rockebFont.loadFromFile("Fonts/rockeb.ttf");
+	btn.buttonSprite.setTexture(bigButtonTexture);
+	btn.buttonSprite.setPosition(1000, 530);
+	btn.buttonSprite.setScale(1.1, 1.1);
+	btn.text.setFont(rockebFont);
+	btn.text.setFillColor(Color::White);
+	btn.text.setPosition(1100, 555);
+	btn.text.setString(textArr[0]);
+}
+void setHeader(Header& header) {
+	String textArr[3] = { "Good Morning, ", "Loser","Haitham Bank" };
+	headerTexture.loadFromFile("Assets/header.png");
+	closeTexture.loadFromFile("Assets/close.png");
+	mininmizeTexture.loadFromFile("Assets/minimize.png");
+	optionsTexture.loadFromFile("Assets/options.png");
+	header.background.setTexture(headerTexture);
+	header.background.setPosition(0, -60);
+	header.background.setScale(1.107, 1.5);
+	header.closeBtn.setTexture(closeTexture);
+	header.minimizeBtn.setTexture(mininmizeTexture);
+	header.optionsBtn.setTexture(optionsTexture);
+	header.closeBtn.setPosition(1850, 30);
+	header.minimizeBtn.setPosition(1780, 45);
+	header.optionsBtn.setPosition(1200, 75);
+	header.goodMorning.setFont(berlinSansFont);
+	header.goodMorning.setString(textArr[0]);
+	header.goodMorning.setCharacterSize(60);
+	header.goodMorning.setFillColor(Color::White);
+	header.goodMorning.setPosition(50, 30);
+	header.user.setFont(berlinSansFont);
+	header.user.setString(textArr[1]);
+	header.user.setCharacterSize(70);
+	header.user.setFillColor(Color::White);
+	header.user.setPosition(100, 80);
+	header.haithamBank.setString(textArr[2]);
+	header.haithamBank.setFont(berlinSansFont);
+	header.haithamBank.setCharacterSize(70);
+	header.haithamBank.setFillColor(Color::White);
+	header.haithamBank.setPosition(750, 45);
+}
+void drawHeader(Header header) {
+	window.draw(header.background);
+	window.draw(header.closeBtn);
+	window.draw(header.minimizeBtn);
+	window.draw(header.optionsBtn);
+	window.draw(header.haithamBank);
+	window.draw(header.goodMorning);
+	window.draw(header.user);
+}
