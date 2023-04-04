@@ -1,2 +1,23 @@
 ﻿  Source.cpp
-  SFML Bank System.vcxproj -> C:\Users\haith\OneDrive\Documents\GitHub\SFML-Bank-System-\SFML Bank System\Debug\SFML Bank System.exe
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(210,20): warning C4018: '<': signed/unsigned mismatch
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(218,20): warning C4018: '<': signed/unsigned mismatch
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(226,20): warning C4018: '<': signed/unsigned mismatch
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(235,20): warning C4018: '<': signed/unsigned mismatch
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(311,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(314,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(420,42): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(421,38): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(428,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(429,39): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(442,33): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(460,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(461,43): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(472,33): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(481,33): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(498,36): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(505,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(510,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(524,39): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(593,40): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(168): warning C4715: 'login': not all control paths return a value
+  SFML Bank System.vcxproj -> D:\SFML-Bank-System-\SFML Bank System\Debug\SFML Bank System.exe
