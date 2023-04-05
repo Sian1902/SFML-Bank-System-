@@ -40,7 +40,7 @@ struct user {
 };
 
 
-RectangleShape mouseRect(Vector2f(10,20));
+RectangleShape mouseRect(Vector2f(10, 20));
 
 // GUI entities struct 
 struct bigDarkBox {
@@ -67,6 +67,11 @@ struct balancePanel {
 	Text balnceText;
 	Text amountText;
 };
+struct viewTransactionBox {
+	Sprite background;
+	Text Transactions[5];
+	Sprite Fields[5];
+};
 
 // system functions  
 
@@ -86,7 +91,8 @@ bool validBalance(user users, float amount);
 void loan(vector<user>& users, float amount, bigDarkBox& bigBox);
 void Withdraw(vector<user>& users, float amount, bigDarkBox& bigBox);
 void transfer(vector<user>& users, float amount, int accNum, bigDarkBox& bigBox);
-void viewTransactions(vector<user> users);
+void viewTransactions(vector<user> users, viewTransactionBox&);
+void drawViewTransactions(viewTransactionBox box);
 
 void write(vector<user> users);
 void read(vector<user>& users);
@@ -99,13 +105,14 @@ void texturesAndFonts();
 void balancePanelIntializer(balancePanel& panel);
 void balancePanelDrawer(balancePanel& panel, vector<user> users);
 void setbigDarkBoxTransferBalance(bigDarkBox&, button&);
-void setHeader(Header& header,vector<user> users);
+void setHeader(Header& header, vector<user> users);
 void setButton(button& btn);
-void drawBigBox(bigDarkBox bigDarkbox, button btn, string transactionTag);
+void drawBigBox(bigDarkBox bigDarkbox, button btn, string transactionTag, viewTransactionBox box);
 void drawHeader(Header header);
 void sideBtnCollision(button btn[], int arrSize, string& s);
+void setViewTransactionBox(viewTransactionBox&);
 
-void functionCaller(string functionTag,string input1,string input,vector<user>& users, bigDarkBox& bigBox);
+void functionCaller(string functionTag, string input1, string input, vector<user>& users, bigDarkBox& bigBox, viewTransactionBox& box);
 
 
 
@@ -116,21 +123,23 @@ int main() {
 	read(users);
 	texturesAndFonts();
 	bigDarkBox bigdarkBox;
-	button btn,btn2,sideButtons[4];
+	button btn, btn2, sideButtons[4];
 	Header header;
 	balancePanel panel;
+	viewTransactionBox box;
 	setbigDarkBoxTransferBalance(bigdarkBox, btn);
-	setHeader(header,users);
+	setHeader(header, users);
 	setButton(btn2);
 	balancePanelIntializer(panel);
 	btnIntializer(sideButtons, 4);
+	setViewTransactionBox(box);
 	////sprites 
 	Sprite background;
 	background.setTexture(backgroundTexture);
 	////background modification
 	background.setScale(1.5, 1.5);
 	background.setPosition(-50, 0);
-	string input,input2;
+	string input, input2;
 	Text inputText, inputText2;
 	inputText.setFont(rockebFont);
 	inputText.setFillColor(Color::White);
@@ -142,47 +151,48 @@ int main() {
 	inputText2.setCharacterSize(40);
 	inputText2.setPosition(1050, 770);
 	string functionTag;
-	int inputIndex=0;
+	int inputIndex = 0;
 	while (window.isOpen())
 	{
-		mouseRect.setPosition(ms.getPosition().x-15, ms.getPosition().y-35);
-		sideBtnCollision(sideButtons, 4,functionTag);
+		mouseRect.setPosition(ms.getPosition().x - 15, ms.getPosition().y - 35);
+		sideBtnCollision(sideButtons, 4, functionTag);
 		if (functionTag != "Transfer Balance") {
 			input2.resize(0);
 		}
+
 		Event event;
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == Event::TextEntered&&input.size()<6) {
+			if (event.type == Event::TextEntered && input.size() < 6) {
 				char c;
-				c= static_cast<char>(event.text.unicode);
+				c = static_cast<char>(event.text.unicode);
 				if (inputIndex == 0) {
 					if (isdigit(c)) {
 						input += c;
 					}
 				}
 				else {
-						if (isdigit(c)) {
-							input2 += c;
-						}
+					if (isdigit(c)) {
+						input2 += c;
 					}
 				}
-			
-		if (inputIndex == 0) {
-			if (event.type == Event::KeyReleased && event.key.code == Keyboard::BackSpace && input.size() > 0) {
-				input.resize(input.size() - 1);
 			}
-		}
-		else {
-			if (event.type == Event::KeyReleased && event.key.code == Keyboard::BackSpace && input2.size() > 0) {
-				input2.resize(input2.size() - 1);
+
+			if (inputIndex == 0) {
+				if (event.type == Event::KeyReleased && event.key.code == Keyboard::BackSpace && input.size() > 0) {
+					input.resize(input.size() - 1);
+				}
 			}
-		}
+			else {
+				if (event.type == Event::KeyReleased && event.key.code == Keyboard::BackSpace && input2.size() > 0) {
+					input2.resize(input2.size() - 1);
+				}
+			}
 			if (functionTag != "Transfer Balance") {
 				if (event.type == Event::KeyReleased && event.key.code == Keyboard::Enter && input.size() > 0) {
-					functionCaller(functionTag, input, input2, users, bigdarkBox);
+					functionCaller(functionTag, input, input2, users, bigdarkBox, box);
 					input.resize(0);
 				}
 			}
@@ -192,7 +202,7 @@ int main() {
 					inputIndex %= 2;
 				}
 				if (event.type == Event::KeyReleased && event.key.code == Keyboard::Enter && inputIndex == 0) {
-					functionCaller(functionTag, input, input2, users, bigdarkBox);
+					functionCaller(functionTag, input, input2, users, bigdarkBox, box);
 					input.resize(0);
 					input2.resize(0);
 
@@ -203,17 +213,21 @@ int main() {
 		}
 		inputText.setString(input);
 		inputText2.setString(input2);
+		if (functionTag == "Last Transactions") {
+			functionCaller(functionTag, input, input2, users, bigdarkBox, box);
+		}
 		window.clear();
 		window.draw(background);
 		sideButtonDrawer(sideButtons, 4);
 		balancePanelDrawer(panel, users);
-		drawBigBox(bigdarkBox, btn, functionTag);
+		drawBigBox(bigdarkBox, btn, functionTag, box);
 		drawHeader(header);
 		window.draw(mouseRect);
 		window.draw(inputText);
 		if (functionTag == "Transfer Balance") {
 			window.draw(inputText2);
 		}
+
 
 		window.display();
 	}
@@ -362,113 +376,114 @@ bool unFreeze(int accNum, vector<user>& users)
 
 }
 
-	//second video
+//second video
 bool validBalance(user users, float amount) {
 
 
 
-		if (users.balance - amount <= 0) {
-			return false;
-
-		}
-		if (amount < 50) {
-			return false;
-
-		}
-
-		return true;
-
+	if (users.balance - amount <= 0) {
+		return false;
 
 	}
-void loan(vector<user>&users, float amount,  bigDarkBox& bigBox) {
-		transaction loanTransaction;
+	if (amount < 50) {
+		return false;
 
-		if (amount * 0.25 >= users[thisUserIndex].balance) {
-			bigBox.TransactionStatus.setString("Rejected due to low balance ");
-		}
-
-
-		else {
-			if (amount > 100000) {
-				months = ((amount + users[thisUserIndex].balance) / amount) * 6;
-			}
-			else {
-				months = (amount + users[thisUserIndex].balance) / amount;
-			}
-			bigBox.TransactionStatus.setString( "loan is accepted and have to be returned by " + to_string(months) + " months" );
-
-			loanTransaction.transactionType = "loan";
-			loanTransaction.transactionAmount = amount;
-			loanTransaction.recepient = "you";
-			users[thisUserIndex].balance += amount;
-			users[thisUserIndex].transactionCount++;
-			users[thisUserIndex].userTransaction.push_back(loanTransaction);
-
-		}
 	}
-void Withdraw(vector<user>&users, float amount, bigDarkBox& bigBox) {
-		transaction withdrawTransaction;
-	
-		if (!validBalance(users[thisUserIndex], amount)) {
-		    bigBox.TransactionStatus.setString( "Not enough balance");
+
+	return true;
+
+
+}
+void loan(vector<user>& users, float amount, bigDarkBox& bigBox) {
+	transaction loanTransaction;
+
+	if (amount * 0.25 >= users[thisUserIndex].balance) {
+		bigBox.TransactionStatus.setString("Rejected due to low balance ");
+	}
+
+
+	else {
+		if (amount > 100000) {
+			months = ((amount + users[thisUserIndex].balance) / amount) * 6;
 		}
 		else {
+			months = (amount + users[thisUserIndex].balance) / amount;
+		}
+		bigBox.TransactionStatus.setString("loan is accepted and have to be returned by " + to_string(months) + " months");
+
+		loanTransaction.transactionType = "loan";
+		loanTransaction.transactionAmount = amount;
+		loanTransaction.recepient = "you";
+		users[thisUserIndex].balance += amount;
+		users[thisUserIndex].transactionCount++;
+		users[thisUserIndex].userTransaction.push_back(loanTransaction);
+
+	}
+}
+void Withdraw(vector<user>& users, float amount, bigDarkBox& bigBox) {
+	transaction withdrawTransaction;
+
+	if (!validBalance(users[thisUserIndex], amount)) {
+		bigBox.TransactionStatus.setString("Not enough balance");
+	}
+	else {
+		users[thisUserIndex].balance -= amount;
+		users[thisUserIndex].transactionCount++;
+		users[thisUserIndex].userTransaction.push_back(withdrawTransaction);
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = "noRecepient";
+		users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "withdrawl";
+
+		bigBox.TransactionStatus.setString("you have withdrawn " + to_string((int)amount));
+		cout << thisUserIndex << endl;
+	}
+
+};
+void transfer(vector<user>& users, float amount, int accNum, bigDarkBox& bigBox) {
+
+
+	transaction temp;
+
+	if (users[thisUserIndex].balance - amount < 0) {
+		bigBox.TransactionStatus.setString("Not enough balance");
+	}
+	else {
+
+
+		if (find(accNum, users)) {
 			users[thisUserIndex].balance -= amount;
+			users[anotherUserIndex].balance += amount;
 			users[thisUserIndex].transactionCount++;
-			users[thisUserIndex].userTransaction.push_back(withdrawTransaction);
+			users[anotherUserIndex].transactionCount++;
+			users[thisUserIndex].userTransaction.push_back(temp);
+			users[anotherUserIndex].userTransaction.push_back(temp);
+			// saving transaction for the sender
 			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
-			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = "noRecepient";
-			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "withdrawl";
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = to_string(accNum);
+			users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "transfer";
 
-			bigBox.TransactionStatus.setString( "you have withdrawn " + to_string((int)amount));
-			cout << thisUserIndex << endl;
-		}
-
-	};
-void transfer(vector<user>&users, float amount,int accNum, bigDarkBox& bigBox) {
-
-	
-		transaction temp;
-		
-		if (users[thisUserIndex].balance - amount < 0) {
-		   bigBox.TransactionStatus.setString( "Not enough balance");
+			// saving transaction for the reciever 
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionAmount = amount;
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].recepient = "you";
+			users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionType = "transfer";
+			bigBox.TransactionStatus.setString("You have transferred amount of " + to_string((int)amount) + " to the account " + to_string(accNum));
 		}
 		else {
-			
-		
-			if (find(accNum, users)) {
-				users[thisUserIndex].balance -= amount;
-				users[anotherUserIndex].balance += amount;
-				users[thisUserIndex].transactionCount++;
-				users[anotherUserIndex].transactionCount++;
-				users[thisUserIndex].userTransaction.push_back(temp);
-				users[anotherUserIndex].userTransaction.push_back(temp);
-				// saving transaction for the sender
-				users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionAmount = amount;
-				users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].recepient = to_string(accNum);
-				users[thisUserIndex].userTransaction[users[thisUserIndex].transactionCount - 1].transactionType = "transfer";
-
-				// saving transaction for the reciever 
-				users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionAmount = amount;
-				users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].recepient = "you";
-				users[anotherUserIndex].userTransaction[users[anotherUserIndex].transactionCount - 1].transactionType = "transfer";
-				bigBox.TransactionStatus.setString("You have transferred amount of " + to_string((int)amount) + " to the account " + to_string(accNum) );
-			}
-			else {
-				bigBox.TransactionStatus.setString( "This acount does not exist");
-			}
-		}
-	};
-void viewTransactions(vector<user> users) {
-		int index = users[thisUserIndex].transactionCount - 1;
-		for (int i = index; i >= 0; i--) {
-			cout << "Transaction of type " << users[thisUserIndex].userTransaction[i].transactionType <<
-				" with amount of " << users[thisUserIndex].userTransaction[i].transactionAmount <<
-				" to " << users[thisUserIndex].userTransaction[i].recepient << endl;
-			if (i == index - 4)
-				break;
+			bigBox.TransactionStatus.setString("This acount does not exist");
 		}
 	}
+};
+void viewTransactions(vector<user> users, viewTransactionBox& box) {
+	int index = users[thisUserIndex].transactionCount - 1;
+	int j = 0;
+	for (int i = index; i >= 0; i--) {
+		//box.Transactions[j].setString("Transaction of Type " + users[thisUserIndex].userTransaction[i].transactionType + " with amount of " + to_string((int)users[thisUserIndex].userTransaction[i].transactionAmount) + " From " + to_string(users[thisUserIndex].accountNum) + " To " + users[thisUserIndex].userTransaction[i].recepient);
+		box.Transactions[j].setString(users[thisUserIndex].userTransaction[i].recepient+"  "+ users[thisUserIndex].userTransaction[i].transactionType+"  "+ to_string((int)users[thisUserIndex].userTransaction[i].transactionAmount));
+		j++;
+		if (i == index - 4)
+			break;
+	}
+}
 
 void write(vector<user> users) {
 
@@ -510,40 +525,40 @@ void read(vector<user>& users) {
 	in.close();
 }
 
-	///GUI functiuons
+///GUI functiuons
 void texturesAndFonts() {
-		headerTexture.loadFromFile("Assets/header.png");
-		closeTexture.loadFromFile("Assets/close.png");
-		mininmizeTexture.loadFromFile("Assets/minimize.png");
-		optionsTexture.loadFromFile("Assets/options.png");
-		backgroundTexture.loadFromFile("Assets/background.png");
-		bigButtonTexture.loadFromFile("Assets/big button.png");
-		smallButtonTexture.loadFromFile("Assets/samll button.png");
-		darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
-		darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
-		enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
-		rockebFont.loadFromFile("Fonts/rockeb.ttf");
-		britanicFont.loadFromFile("Fonts/BRITANIC.ttf");
-		berlinSansFont.loadFromFile("Fonts/Berlin Sans FB Regular.ttf");
-	}
+	headerTexture.loadFromFile("Assets/header.png");
+	closeTexture.loadFromFile("Assets/close.png");
+	mininmizeTexture.loadFromFile("Assets/minimize.png");
+	optionsTexture.loadFromFile("Assets/options.png");
+	backgroundTexture.loadFromFile("Assets/background.png");
+	bigButtonTexture.loadFromFile("Assets/big button.png");
+	smallButtonTexture.loadFromFile("Assets/samll button.png");
+	darkBackgroundTexture.loadFromFile("Assets/medium dark background.png");
+	darkBackgroundSmallTexture.loadFromFile("Assets/small dark background.png");
+	enterValuesBackgroundTexture.loadFromFile("Assets/enter values background.png");
+	rockebFont.loadFromFile("Fonts/rockeb.ttf");
+	britanicFont.loadFromFile("Fonts/BRITANIC.ttf");
+	berlinSansFont.loadFromFile("Fonts/Berlin Sans FB Regular.ttf");
+}
 void btnIntializer(button btn[], int arrSize) {
-		string btnstring[4] = { "Transfer Balance","Withdraw","Last Transactions","Ask for a Loan" };
+	string btnstring[4] = { "Transfer Balance","Withdraw","Last Transactions","Ask for a Loan" };
 
-		for (int i = 0; i < arrSize; i++) {
-			btn[i].btnSprite.setTexture(smallButtonTexture);
-			btn[i].btnText.setFont(rockebFont);
-			btn[i].btnText.setFillColor(Color::White);
-			btn[i].btnSprite.setPosition(80, 500 + ((i) * 115));
-			btn[i].btnSprite.setScale(1.2, 1.2);
-			btn[i].btnText.setString(btnstring[i]);
-		}
-		btn[0].btnText.setPosition(130, 525);
-		btn[1].btnText.setPosition(185, 643);
-		btn[2].btnText.setPosition(125, 760);
-		btn[3].btnText.setPosition(150, 875);
+	for (int i = 0; i < arrSize; i++) {
+		btn[i].btnSprite.setTexture(smallButtonTexture);
+		btn[i].btnText.setFont(rockebFont);
+		btn[i].btnText.setFillColor(Color::White);
+		btn[i].btnSprite.setPosition(80, 500 + ((i) * 115));
+		btn[i].btnSprite.setScale(1.2, 1.2);
+		btn[i].btnText.setString(btnstring[i]);
 	}
+	btn[0].btnText.setPosition(130, 525);
+	btn[1].btnText.setPosition(185, 643);
+	btn[2].btnText.setPosition(125, 760);
+	btn[3].btnText.setPosition(150, 875);
+}
 void setButton(button& btn) {
-	String textArr =  "Transfer Balance" ;
+	String textArr = "Transfer Balance";
 	btn.btnSprite.setTexture(bigButtonTexture);
 	btn.btnSprite.setPosition(1000, 530);
 	btn.btnSprite.setScale(1.1, 1.1);
@@ -590,7 +605,7 @@ void balancePanelIntializer(balancePanel& panel) {
 	panel.amountText.setPosition(170, 350);
 
 }
-void setHeader(Header& header,vector<user> users) {
+void setHeader(Header& header, vector<user> users) {
 	String textArr[3] = { "Good Morning, ", "Loser","Haitham Bank" };
 	header.background.setTexture(headerTexture);
 	header.background.setPosition(0, -60);
@@ -618,14 +633,14 @@ void setHeader(Header& header,vector<user> users) {
 	header.haithamBank.setPosition(750, 45);
 }
 void sideButtonDrawer(button btn[], int arrSize)
-	{
-		for (int i = 0; i < arrSize; i++) {
+{
+	for (int i = 0; i < arrSize; i++) {
 
-			window.draw(btn[i].btnSprite);
-			window.draw(btn[i].btnText);
+		window.draw(btn[i].btnSprite);
+		window.draw(btn[i].btnText);
 
-		}
 	}
+}
 void balancePanelDrawer(balancePanel& panel, vector<user> users)
 {
 	window.draw(panel.panel);
@@ -633,18 +648,24 @@ void balancePanelDrawer(balancePanel& panel, vector<user> users)
 	window.draw(panel.balnceText);
 	window.draw(panel.amountText);
 }
-void drawBigBox(bigDarkBox bigDarkbox, button btn, string transactionTag ) {
-	window.draw(bigDarkbox.background);
-	window.draw(btn.btnSprite);
-	btn.btnText.setString(transactionTag);
-	window.draw(btn.btnText);
-	window.draw(bigDarkbox.valueField1);
-	window.draw(bigDarkbox.amountTxt);
-	if (transactionTag == "Transfer Balance") {
-		window.draw(bigDarkbox.valueField2);
-		window.draw(bigDarkbox.Totxt);
+void drawBigBox(bigDarkBox bigDarkbox, button btn, string transactionTag, viewTransactionBox box) {
+	if (transactionTag == "Last Transactions") {
+		drawViewTransactions(box);
 	}
-	window.draw(bigDarkbox.TransactionStatus);
+	else {
+		window.draw(bigDarkbox.background);
+		window.draw(btn.btnSprite);
+		btn.btnText.setString(transactionTag);
+		window.draw(btn.btnText);
+		window.draw(bigDarkbox.valueField1);
+		window.draw(bigDarkbox.amountTxt);
+		if (transactionTag == "Transfer Balance") {
+			window.draw(bigDarkbox.valueField2);
+			window.draw(bigDarkbox.Totxt);
+		}
+		window.draw(bigDarkbox.TransactionStatus);
+	}
+
 }
 void drawHeader(Header header) {
 	window.draw(header.background);
@@ -655,7 +676,7 @@ void drawHeader(Header header) {
 	window.draw(header.goodMorning);
 	window.draw(header.user);
 }
-void sideBtnCollision(button btn[], int arrSize,string &s ) {
+void sideBtnCollision(button btn[], int arrSize, string& s) {
 
 	for (int i = 0; i < arrSize; i++) {
 		if (btn[i].btnSprite.getGlobalBounds().intersects(mouseRect.getGlobalBounds())) {
@@ -670,18 +691,54 @@ void sideBtnCollision(button btn[], int arrSize,string &s ) {
 	}
 
 }
-void functionCaller(string functionTag, string input1, string input2, vector<user>& users, bigDarkBox& bigBox)
+void functionCaller(string functionTag, string input1, string input2, vector<user>& users, bigDarkBox& bigBox, viewTransactionBox& box)
 {
 	if (functionTag == "Transfer Balance") {
-		transfer(users, stof(input1), stoi(input2),bigBox);
+		transfer(users, stof(input1), stoi(input2), bigBox);
 	}
 	else if (functionTag == "Withdraw") {
 		Withdraw(users, stof(input1), bigBox);
 	}
 	else if (functionTag == "Ask for a Loan") {
-		loan(users, stof(input1),bigBox);
+		loan(users, stof(input1), bigBox);
 	}
 	else {
-
+		viewTransactions(users, box);
 	}
 }
+void setViewTransactionBox(viewTransactionBox& box) {
+	box.background.setTexture(darkBackgroundTexture);
+	box.background.setPosition(710, 500);
+	box.background.setScale(1.11, 1.105);
+
+	for (int i = 0;i < 5;i++) {
+
+		box.Transactions[i].setFont(rockebFont);
+		box.Transactions[i].setCharacterSize(30);
+		box.Transactions[i].setPosition(800, 540 + (i * 75));
+		box.Transactions[i].setFillColor(Color::White);
+
+
+	}
+	for (int i = 0;i < 5;i++) {
+		box.Fields[i].setTexture(enterValuesBackgroundTexture);
+		box.Fields[i].setPosition(750, 520 + (i * 75));
+		box.Fields[i].setScale(1.75, 1);
+	
+	}
+
+
+}
+void drawViewTransactions(viewTransactionBox box) {
+	window.draw(box.background);
+	for (int i = 0;i < 5;i++) {
+		window.draw(box.Transactions[i]);
+
+	}
+	for (int i = 0;i < 5;i++) {
+		window.draw(box.Fields[i]);
+
+	}
+
+}
+

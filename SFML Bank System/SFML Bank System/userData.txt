@@ -1,4 +1,4 @@
-8827 Alex Alex1124@user.bank 01160038757 17388 45 46 63116715 0
+8827 Alex Alex1124@user.bank 01160038757 16538 47 46 63116715 0
 you loan 1200
 you loan 400
 noRecepient withdrawl 2000
@@ -44,6 +44,8 @@ noRecepient withdrawl 1000
 2912 transfer 12312
 noRecepient withdrawl 300
 you loan 1000
+noRecepient withdrawl 450
+noRecepient withdrawl 400
 2912 Andy Andy316@user.bank 01132623718 66738 2 39 6396232 0
 you transfer 1000
 you transfer 12312
