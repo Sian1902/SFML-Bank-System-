@@ -1,14 +1,58 @@
 ﻿  Source.cpp
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(100,28): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(126,42): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(144,35): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(145,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(151,37): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(154,29): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(156,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(190,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(191,35): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(437,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(440,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(292): warning C4715: 'login': not all control paths return a value
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(188,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(273,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(393,64): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(396,53): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(543,40): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(544,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(556,33): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(566,44): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(587,33): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(604,39): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(710,37): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(716,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(723,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(744,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(746,76): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(746,48): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(839,32): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(841,76): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(841,48): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=unsigned int
+          ]
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(903,38): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(910,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(911,41): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(922,33): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(942,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(945,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(947,43): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(955,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(997,40): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1063,53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1066,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1103,36): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1143,69): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1143,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1229,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1234,69): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1234,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1318,38): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1310,8): warning C4101: 'ms': unreferenced local variable
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1410,69): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\SFML Bank System\Source.cpp(1410,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   SFML Bank System.vcxproj -> C:\Users\DELL\Documents\GitHub\SFML-Bank-System-\SFML Bank System\x64\Debug\SFML Bank System.exe
