@@ -1,3 +1,21 @@
-1234 ahmed ahmed@admin.bank 011123456789 0 1 30 admin@1234
-141 haitham haitham@ofcourse.omg 010122434 3 0 15 ohshoot
-985 ahmed adfad@me 011446289006 400 0 22 hdfga34
+141 Ahmed Ahmed@user.bank 0123123432 29000 2 23 1234 1
+you transfer 2000
+you transfer 2000
+985 Mohamed Mohamed@user.bank 01233452345 23000 5 25 1234 1
+141 transfer 2000
+noRecepient withdrawl 2000
+you loan 2000
+you loan 2000
+141 transfer 2000
+972 hasaneen hasaneen@user.bank 01222232 25000 0 22 1234 0
+0 mohsen mohsen@employee.bank 0 0 0 0 1234 1
+0 momtaz momtaz@employee.bank 0 0 0 0 1234 0
+938 montaser montaser@user.bank 121212121 25000 0 25 1234 0
+0 mohab mohab@employee.bank 0 0 0 0 1234 0
+0 osama osama@employee.bank 0 0 0 0 1234 0
+0 adanan adnan@employee.bank 0 0 0 0 123 0
+0 marawan marawan@employee.bank 0 0 0 0 123 0
+128 Alaa Alaa@user.bank 01345677 75000 2 25 1234 0
+noRecepient withdrawl 3000
+you loan 50000
+0 emp9 employee9@employee.bank 0 0 0 0 1234 0
