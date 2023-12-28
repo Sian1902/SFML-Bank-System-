@@ -6,9 +6,6 @@ Welcome to the SFML Bank System project! This simple bank system is developed us
 
 The primary goal of this project is to assist freshmen students with their Software Project (SP) assignments. By implementing this bank system, students can apply the concepts they've learned throughout their course in C++. Additionally, for the graphical interface component of their projects, students have the flexibility to utilize any C++ library that supports graphics, such as SFML.
 
-## Support
-
-For any questions or support related to this project, please reach out to the [Support FCIS team on Facebook](https://www.facebook.com/SUPPORT.FCIS).
 
 ## Tutorial Playlist
 
