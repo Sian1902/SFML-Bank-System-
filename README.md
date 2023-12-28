@@ -1,3 +1,5 @@
+Sure, I can rewrite the markdown document for you with the suggested fixes. Here is the updated version:
+
 # SFML Bank System
 
 Welcome to the SFML Bank System project! This simple bank system is developed using C++ and the SFML library. It serves as a demonstration for creating graphical user interfaces (GUIs) with SFML. The project is primarily intended for educational purposes, specifically for students at the Faculty of Computer Science at Ain Shams University.
@@ -23,21 +25,23 @@ To get started with the SFML Bank System, follow these steps:
 1. **Clone the Repository**: 
    ```bash
    git clone [repository-url]
-2. **Instal SFML:**
-  *follow instructions on [SFML official website](https://www.sfml-dev.org/index.php)
-3. **Build and run**
-   *Navigate to the project directory and use a C++ compiler to build the project.
-   *Run the executable to launch the SFML Bank System.
-##Features
+   ```
+2. **Install SFML**:
+   - Follow instructions on [SFML official website](https://www.sfml-dev.org/index.php)
+3. **Build and run**:
+   - Navigate to the project directory and use a C++ compiler to build the project.
+   - Run the executable to launch the SFML Bank System.
 
-   *Simple bank system interface.
-   *Developed using C++ and SFML.
-   *Educational resource for SP projects.
-   *Supports GUI development with SFML.
+## Features
+
+- Simple bank system interface.
+- Developed using C++ and SFML.
+- Educational resource for SP projects.
+- Supports GUI development with SF
 
 ##Contribution
 
-If you're interested in contributing to this project or have suggestions for improvements, please feel free to submit pull requests or reach out to the project maintainers.
+   If you're interested in contributing to this project or have suggestions for improvements, please feel free to submit pull requests or reach out to the project maintainers.
 ---
 For any questions or support, please contact the [Support FCIS](https://www.facebook.com/SUPPORT.FCIS) team on Facebook or refer to the tutorial playlist for more information.
 
