@@ -1,5 +1,3 @@
-Sure, I can rewrite the markdown document for you with the suggested fixes. Here is the updated version:
-
 # SFML Bank System
 
 Welcome to the SFML Bank System project! This simple bank system is developed using C++ and the SFML library. It serves as a demonstration for creating graphical user interfaces (GUIs) with SFML. The project is primarily intended for educational purposes, specifically for students at the Faculty of Computer Science at Ain Shams University.
