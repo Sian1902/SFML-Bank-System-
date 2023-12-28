@@ -29,12 +29,14 @@ To get started with the SFML Bank System, follow these steps:
    *Navigate to the project directory and use a C++ compiler to build the project.
    *Run the executable to launch the SFML Bank System.
 ##Features
+
    *Simple bank system interface.
    *Developed using C++ and SFML.
    *Educational resource for SP projects.
    *Supports GUI development with SFML.
 
 ##Contribution
+
 If you're interested in contributing to this project or have suggestions for improvements, please feel free to submit pull requests or reach out to the project maintainers.
 ---
 For any questions or support, please contact the [Support FCIS](https://www.facebook.com/SUPPORT.FCIS) team on Facebook or refer to the tutorial playlist for more information.
